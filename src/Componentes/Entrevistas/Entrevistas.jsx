@@ -62,7 +62,7 @@ function Entrevistas() {
 
       const { data: postulacionData, error: postulacionError } = await supabase
         .from('Postulacion')
-        .select('name_user, telefono, dni, fecha_postulacion')
+        .select('name_user, telefono, dni, fecha_postulacion, estado_etapas')
         .eq('id_oferta', id_oferta)
         .eq('estado', 'apto');
 
@@ -75,7 +75,7 @@ function Entrevistas() {
 
       const { data: noAuthData, error: noAuthError } = await supabase
         .from('CandidatosNoAuth')
-        .select('nombre, telefono, dni, fecha')
+        .select('nombre, telefono, dni, fecha, estado_etapas')
         .eq('id_oferta', id_oferta)
         .eq('estado', 'apto');
 
@@ -100,7 +100,7 @@ function Entrevistas() {
     setFilteredCandidatos([...candidatos, ...candidatosNoAuth].sort((a, b) => {
       const dateA = new Date(a.fecha_postulacion || a.fecha);
       const dateB = new Date(b.fecha_postulacion || b.fecha);
-      return dateB - dateA; // Orden descendente que existe si
+      return dateB - dateA;
     }));
   }, [candidatos, candidatosNoAuth]);
 
@@ -136,6 +136,69 @@ function Entrevistas() {
     setFilteredCandidatos(filtered);
   };
 
+  // Function to move candidate to a specific stage
+  const moveCandidateToStage = async (candidate, etapa) => {
+    // Si se selecciona "Ninguna", actualiza el estado y no hace nada más
+    if (etapa === "Ninguna") {
+      const { error } = await supabase
+        .from('CandidatosNoAuth')
+        .update({ estado_etapas: "Ninguna" })
+        .eq('id_oferta', id_oferta)
+        .eq('dni', candidate.dni);
+  
+      if (error) {
+        console.error('Error al mover candidato:', error);
+      } else {
+        // Actualiza el estado local de los candidatos
+        setCandidatosNoAuth(prev => {
+          const updatedCandidatos = prev.map(c => {
+            if (c.dni === candidate.dni) {
+              return { ...c, estado_etapas: "Ninguna" }; // Actualiza la etapa del candidato
+            }
+            return c;
+          });
+          return updatedCandidatos.filter(c => c.estado_etapas !== "Ninguna"); // Opcional: filtra candidatos con estado "Ninguna"
+        });
+  
+        // También actualiza filteredCandidatos si es necesario
+        setFilteredCandidatos(prev => {
+          return prev.filter(c => c.dni !== candidate.dni); // Filtra el candidato que fue marcado como "Ninguna"
+        });
+      }
+    } else {
+      const { error } = await supabase
+        .from('CandidatosNoAuth')
+        .update({ estado_etapas: etapa })
+        .eq('id_oferta', id_oferta)
+        .eq('dni', candidate.dni);
+  
+      if (error) {
+        console.error('Error al mover candidato:', error);
+      } else {
+        // Actualiza el estado local de los candidatos
+        setCandidatosNoAuth(prev => {
+          const updatedCandidatos = prev.map(c => {
+            if (c.dni === candidate.dni) {
+              return { ...c, estado_etapas: etapa }; // Actualiza la etapa del candidato
+            }
+            return c;
+          });
+          return updatedCandidatos;
+        });
+  
+        // También actualiza filteredCandidatos si es necesario
+        setFilteredCandidatos(prev => {
+          return prev.map(c => {
+            if (c.dni === candidate.dni) {
+              return { ...c, estado_etapas: etapa }; // Actualiza la etapa del candidato
+            }
+            return c;
+          });
+        });
+      }
+    }
+  };
+
   return (
     <div className="w-full h-screen flex">
       <HeaderAdmin />
@@ -150,7 +213,7 @@ function Entrevistas() {
 
         <div className="flex space-x-4">
           <div className="bg-white rounded-lg border p-8 mt-5 max-w-sm ml-0">
-            <h2 className="mb-4 font-medium text-gray-600 ">Candidatos</h2>
+            <h2 className="mb-4 font-medium text-gray-600">Candidatos</h2>
             {filteredCandidatos.length > 0 ? (
               filteredCandidatos.map((candidato, index) => (
                 <div key={index} className="bg-white rounded-lg border p-6 mb-2">
@@ -158,6 +221,17 @@ function Entrevistas() {
                   <p className="text-sm text-gray-500">DNI: {candidato.dni}</p>
                   <p className="text-sm text-gray-500 mt-1">Celular: {candidato.telefono}</p>
                   <p className="text-sm text-gray-500">Fecha: {formatDate(candidato.fecha_postulacion || candidato.fecha)}</p>
+                  
+                  <select
+                    className="mt-2 bg-blue-500 text-white rounded px-2 py-1"
+                    onChange={(e) => moveCandidateToStage(candidato, e.target.value)}
+                  >
+                    <option value="">Selecciona una etapa</option>
+                    <option value="">Ninguna</option>
+                    {programaData[0]?.etapas?.map((etapa, idx) => (
+                      <option key={idx} value={etapa.etapa}>{etapa.etapa}</option>
+                    ))}
+                  </select>
                 </div>
               ))
             ) : (
@@ -171,7 +245,15 @@ function Entrevistas() {
                 <div key={index} className="bg-gray-200 rounded-lg shadow-md p-8 mt-5 flex-grow">
                   <h2 className="mb-4 font-medium text-gray-600">{etapa.etapa}</h2>
                   <div className="space-y-4">
-
+                    {/* Filtrar candidatos que pertenecen a la etapa actual */}
+                    {filteredCandidatos.filter(candidato => candidato.estado_etapas === etapa.etapa).map((candidato, idx) => (
+                      <div key={idx} className="bg-white rounded-lg border p-4 mb-2">
+                        <h3 className="text-lg font-medium">{candidato.name_user || candidato.nombre}</h3>
+                        <p className="text-sm text-gray-500">DNI: {candidato.dni}</p>
+                        <p className="text-sm text-gray-500 mt-1">Celular: {candidato.telefono}</p>
+                        <p className="text-sm text-gray-500">Fecha: {formatDate(candidato.fecha_postulacion || candidato.fecha)}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
