@@ -18,12 +18,14 @@ const JobProceso = () => {
   const { user } = UserAuth();
   const { searchTerm } = useContext(JobsContext);
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true); // Nuevo estado para el estado de carga
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchJobs = async () => {
-      setLoading(true); // Inicia la carga
+      setLoading(true);
+
       if (user) {
+        // Obtener el perfil del reclutador
         const { data: profileData, error: profileError } = await supabase
           .from("perfiles")
           .select("id")
@@ -38,10 +40,27 @@ const JobProceso = () => {
 
         const idReclutador = profileData.id;
 
+        // Obtener los id_oferta activos desde la tabla Programa para el reclutador actual
+        const { data: programaData, error: programaError } = await supabase
+          .from("Programa")
+          .select("id_oferta")
+          .eq("id_reclutador", idReclutador);
+
+        if (programaError) {
+          console.error("Error fetching programs:", programaError);
+          setLoading(false);
+          return;
+        }
+
+        // Extraer los id_oferta únicos de los programas del reclutador
+        const ofertaIds = programaData.map((programa) => programa.id_oferta);
+
+        // Obtener trabajos activos desde Oferta donde el id_oferta esté en los ids de programas y el estado sea "activa"
         const { data: jobsData, error: jobsError } = await supabase
           .from("Oferta")
           .select("*")
-          .eq("id_reclutador", idReclutador);
+          .in("id_oferta", ofertaIds)
+          .eq("estado", "activa");
 
         if (jobsError) {
           console.error("Error fetching jobs:", jobsError);
@@ -53,7 +72,7 @@ const JobProceso = () => {
           setJobs(sortedJobs);
         }
       }
-      setLoading(false); // Termina la carga
+      setLoading(false);
     };
 
     fetchJobs();

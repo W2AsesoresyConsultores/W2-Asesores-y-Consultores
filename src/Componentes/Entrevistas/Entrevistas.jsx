@@ -150,7 +150,7 @@ function Entrevistas() {
 
         <div className="flex space-x-4">
           <div className="bg-white rounded-lg border p-8 mt-5 max-w-sm ml-0">
-            <h2 className="mb-4 font-medium text-gray-600 ">Candidatos</h2>
+            <h2 className="mb-4 font-medium text-gray-700 ">Candidatos</h2>
             {filteredCandidatos.length > 0 ? (
               filteredCandidatos.map((candidato, index) => (
                 <div key={index} className="bg-white rounded-lg border p-6 mb-2">
@@ -168,8 +168,8 @@ function Entrevistas() {
           {programaData.length > 0 && (
             <div className="flex space-x-4 flex-grow">
               {programaData[0].etapas?.map((etapa, index) => (
-                <div key={index} className="bg-gray-200 rounded-lg shadow-md p-8 mt-5 flex-grow">
-                  <h2 className="mb-4 font-medium text-gray-600">{etapa.etapa}</h2>
+                <div key={index} className="bg-white rounded-lg shadow-md p-8 mt-5 flex-grow">
+                  <h2 className="mb-4 font-medium text-gray-700">{etapa.etapa}</h2>
                   <div className="space-y-4">
 
                   </div>
