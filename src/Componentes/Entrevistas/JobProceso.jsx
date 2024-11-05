@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { supabase } from "../../supabase/supabase.config";
 import { Link } from "react-router-dom";
 import { SiStagetimer } from "react-icons/si";
@@ -19,60 +19,55 @@ const JobProceso = () => {
   const { searchTerm } = useContext(JobsContext);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const hasFetchedJobs = useRef(false); // To track if jobs are already fetched
 
   useEffect(() => {
     const fetchJobs = async () => {
-      setLoading(true);
+      if (!user || hasFetchedJobs.current) return;
 
-      if (user) {
-        // Obtener el perfil del reclutador
+      setLoading(true);
+      hasFetchedJobs.current = true; // Set as fetched
+
+      try {
+        // Fetch recruiter profile
         const { data: profileData, error: profileError } = await supabase
           .from("perfiles")
           .select("id")
           .eq("id", user.id)
           .single();
 
-        if (profileError) {
-          console.error("Error fetching profile:", profileError);
-          setLoading(false);
-          return;
-        }
+        if (profileError) throw profileError;
 
         const idReclutador = profileData.id;
 
-        // Obtener los id_oferta activos desde la tabla Programa para el reclutador actual
+        // Fetch active program ids
         const { data: programaData, error: programaError } = await supabase
           .from("Programa")
           .select("id_oferta")
           .eq("id_reclutador", idReclutador);
 
-        if (programaError) {
-          console.error("Error fetching programs:", programaError);
-          setLoading(false);
-          return;
-        }
+        if (programaError) throw programaError;
 
-        // Extraer los id_oferta únicos de los programas del reclutador
         const ofertaIds = programaData.map((programa) => programa.id_oferta);
 
-        // Obtener trabajos activos desde Oferta donde el id_oferta esté en los ids de programas y el estado sea "activa"
+        // Fetch active jobs
         const { data: jobsData, error: jobsError } = await supabase
           .from("Oferta")
           .select("*")
           .in("id_oferta", ofertaIds)
           .eq("estado", "activa");
 
-        if (jobsError) {
-          console.error("Error fetching jobs:", jobsError);
-        } else {
-          const sortedJobs = jobsData.sort(
-            (a, b) =>
-              new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion)
-          );
-          setJobs(sortedJobs);
-        }
+        if (jobsError) throw jobsError;
+
+        const sortedJobs = jobsData.sort(
+          (a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion)
+        );
+        setJobs(sortedJobs);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchJobs();
