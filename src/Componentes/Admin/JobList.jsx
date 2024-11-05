@@ -1,13 +1,13 @@
-import { LinearProgress, Select, MenuItem, IconButton, Tooltip, TablePagination } from '@mui/material';
-import React, { useEffect, useState, useContext } from 'react';
-import { supabase } from '../../supabase/supabase.config';
+import React, { useContext, useState, useEffect } from 'react';
+import {
+  LinearProgress, Select, MenuItem, IconButton, Tooltip, TablePagination
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import { FaUserFriends, FaDollarSign } from 'react-icons/fa';
 import { FaLocationDot, FaBuildingUser } from "react-icons/fa6";
-import { MdOutlineVerifiedUser } from "react-icons/md";
-import { UserAuth } from '../../Context/AuthContext';
-import JobsContext from '../../Context/JobsContext';
 import EditIcon from "@mui/icons-material/Edit";
+import JobsContext from '../../Context/JobsContext';
+import { supabase } from '../../supabase/supabase.config';
 
 const formatDate = (isoString) => {
   const date = new Date(isoString);
@@ -18,56 +18,32 @@ const formatDate = (isoString) => {
 };
 
 const JobList = () => {
-  const { user } = UserAuth();
-  const { searchTerm } = useContext(JobsContext);
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { userSearchResults: jobs, setJobs, userId } = useContext(JobsContext); // Asegúrate de tener userId
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(9);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchJobs = async () => {
       setLoading(true);
+      const { data, error } = await supabase
+        .from('Oferta')
+        .select('*')
+        .eq('user_id', userId); // Filtra por el ID de usuario
 
-      if (user) {
-        const { data: profileData, error: profileError } = await supabase
-          .from('perfiles')
-          .select('id')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) {
-          console.error('Error fetching profile:', profileError);
-          setLoading(false);
-          return;
-        }
-
-        const idReclutador = profileData.id;
-
-        const { data: jobsData, error: jobsError } = await supabase
-          .from('Oferta')
-          .select('*')
-          .eq('id_reclutador', idReclutador);
-
-        if (jobsError) {
-          console.error('Error fetching jobs:', jobsError);
-        } else {
-          const sortedJobs = jobsData.sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
-          setJobs(sortedJobs);
-        }
-
-        setLoading(false);
+      if (error) {
+        console.error('Error fetching jobs:', error);
+      } else {
+        setJobs(data);
       }
+      setLoading(false);
     };
 
     fetchJobs();
-  }, [user]);
-
-  const filteredJobs = jobs.filter((job) =>
-    job.puesto.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  }, [setJobs, userId]);
 
   const handleChangeStatus = async (index, newStatus) => {
+    setLoading(true);
     const jobToUpdate = jobs[index];
 
     const { error } = await supabase
@@ -82,6 +58,7 @@ const JobList = () => {
       updatedJobs[index].estado = newStatus;
       setJobs(updatedJobs);
     }
+    setLoading(false);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -112,8 +89,8 @@ const JobList = () => {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {filteredJobs.length > 0 ? (
-              filteredJobs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((job, index) => (
+            {jobs.length > 0 ? (
+              jobs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((job, index) => (
                 <div
                   key={job.id_oferta}
                   className="bg-white rounded-lg border border-[#e2e8f0] shadow-sm p-6 flex flex-col justify-between"
@@ -201,7 +178,7 @@ const JobList = () => {
           <TablePagination
             rowsPerPageOptions={[9]}
             component="div"
-            count={filteredJobs.length}
+            count={jobs.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
