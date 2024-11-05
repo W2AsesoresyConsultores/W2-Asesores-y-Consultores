@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { supabase } from "../../supabase/supabase.config";
 import { Link } from "react-router-dom";
 import { SiStagetimer } from "react-icons/si";
@@ -18,42 +18,56 @@ const JobProceso = () => {
   const { user } = UserAuth();
   const { searchTerm } = useContext(JobsContext);
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true); // Nuevo estado para el estado de carga
+  const [loading, setLoading] = useState(true);
+  const hasFetchedJobs = useRef(false); // To track if jobs are already fetched
 
   useEffect(() => {
     const fetchJobs = async () => {
-      setLoading(true); // Inicia la carga
-      if (user) {
+      if (!user || hasFetchedJobs.current) return;
+
+      setLoading(true);
+      hasFetchedJobs.current = true; // Set as fetched
+
+      try {
+        // Fetch recruiter profile
         const { data: profileData, error: profileError } = await supabase
           .from("perfiles")
           .select("id")
           .eq("id", user.id)
           .single();
 
-        if (profileError) {
-          console.error("Error fetching profile:", profileError);
-          setLoading(false);
-          return;
-        }
+        if (profileError) throw profileError;
 
         const idReclutador = profileData.id;
 
+        // Fetch active program ids
+        const { data: programaData, error: programaError } = await supabase
+          .from("Programa")
+          .select("id_oferta")
+          .eq("id_reclutador", idReclutador);
+
+        if (programaError) throw programaError;
+
+        const ofertaIds = programaData.map((programa) => programa.id_oferta);
+
+        // Fetch active jobs
         const { data: jobsData, error: jobsError } = await supabase
           .from("Oferta")
           .select("*")
-          .eq("id_reclutador", idReclutador);
+          .in("id_oferta", ofertaIds)
+          .eq("estado", "activa");
 
-        if (jobsError) {
-          console.error("Error fetching jobs:", jobsError);
-        } else {
-          const sortedJobs = jobsData.sort(
-            (a, b) =>
-              new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion)
-          );
-          setJobs(sortedJobs);
-        }
+        if (jobsError) throw jobsError;
+
+        const sortedJobs = jobsData.sort(
+          (a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion)
+        );
+        setJobs(sortedJobs);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false); // Termina la carga
     };
 
     fetchJobs();

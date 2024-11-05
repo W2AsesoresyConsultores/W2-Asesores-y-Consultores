@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { supabase } from '../supabase/supabase.config'; // Ajusta la ruta según la ubicación de tu archivo
+import { supabase } from '../supabase/supabase.config'; 
+import { UserAuth } from '../Context/AuthContext';
 
 const JobsContext = createContext();
 
@@ -8,27 +9,60 @@ const removeAccents = (str) => {
 };
 
 export const JobsProvider = ({ children }) => {
+  const { user } = UserAuth();
   const [jobs, setJobs] = useState([]);
   const [userSearchResults, setUserSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+const fetchJobs = async () => {
+  if (!user) return;
+
+  const { data: profileData, error: profileError } = await supabase
+    .from('perfiles')
+    .select('id')
+    .eq('id', user.id)
+    .single();
+
+  if (profileError) {
+    console.error('Error fetching profile:', profileError);
+    return;
+  }
+
+  const idReclutador = profileData.id;
+
+  const { data, error } = await supabase
+    .from('Oferta')
+    .select('*')
+    .eq('id_reclutador', idReclutador)
+    .order('fecha_publicacion', { ascending: false }); // Order by date
+
+  if (error) {
+    console.error('Error fetching jobs:', error);
+  } else {
+    const validJobs = data.filter((job) => job.puesto !== undefined && job.puesto !== null);
+    setJobs(validJobs);
+    setUserSearchResults(validJobs);
+  }
+};
+
   useEffect(() => {
-    const fetchJobs = async () => {
-      const { data, error } = await supabase
-        .from('Oferta')
-        .select('*');
-
-      if (error) {
-        console.error('Error fetching jobs:', error);
-      } else {
-        const validJobs = data.filter((job) => job.puesto !== undefined && job.puesto !== null);
-        setJobs(validJobs);
-        setUserSearchResults(validJobs); // Inicialmente mostrar todos los trabajos
-      }
-    };
-
     fetchJobs();
-  }, []);
+
+    const subscription = supabase
+      .channel('jobs-changes')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Oferta' }, (payload) => {
+        const newJob = payload.new;
+        if (newJob.id_reclutador === user.id) { // Ensure it's for the current recruiter
+          setJobs((prevJobs) => [...prevJobs, newJob]);
+          setUserSearchResults((prevResults) => [...prevResults, newJob]);
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, [user]);
 
   useEffect(() => {
     const filteredJobs = jobs.filter(job => 
@@ -52,7 +86,7 @@ export const JobsProvider = ({ children }) => {
   };
 
   const resetSearchResults = () => {
-    setUserSearchResults(jobs); // Restablecer a todos los trabajos
+    setUserSearchResults(jobs);
   };
 
   const deleteJob = async (id_oferta) => {
@@ -70,7 +104,7 @@ export const JobsProvider = ({ children }) => {
   };
 
   return (
-    <JobsContext.Provider value={{ jobs, setJobs, searchJobs, userSearchResults, resetSearchResults, searchTerm, setSearchTerm, deleteJob }}>
+    <JobsContext.Provider value={{ jobs, setJobs, searchJobs, userSearchResults, resetSearchResults, searchTerm, setSearchTerm, deleteJob, fetchJobs }}>
       {children}
     </JobsContext.Provider>
   );

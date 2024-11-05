@@ -61,9 +61,7 @@ function Proceso() {
   }, [user]);
 
   const handleAddStage = () => {
-    if (stages.length < 4) {
-      setStages([...stages, { etapa: '', recomendacion: '', modalidad: '', direccion: '', mapsURL: '' }]);
-    }
+    setStages([...stages, { etapa: '', recomendacion: '', modalidad: '', direccion: '', mapsURL: '' }]);
   };
 
   const handleDeleteStage = (index) => {
@@ -175,92 +173,92 @@ function Proceso() {
             <div className="mb-6">
               <h2 className="text-lg font-semibold mb-3">Etapas</h2>
               {stages.map((stage, index) => (
-                <div key={index} className="mb-4 border p-4 rounded-lg relative">
-                  {index > 0 && (
-                    <MdDelete
-                      className="absolute top-2 right-2 text-red-600 cursor-pointer"
-                      onClick={() => handleDeleteStage(index)}
-                    />
-                  )}
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-700">Nombre de la Etapa</label>
-                    <input
-                      type="text"
-                      value={stage.etapa}
-                      onChange={(e) => handleStageChange(index, 'etapa', e.target.value)}
-                      className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                    />
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-700">Recomendaciones</label>
-                    <textarea
-                      value={stage.recomendacion}
-                      onChange={(e) => handleStageChange(index, 'recomendacion', e.target.value)}
-                      className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                    />
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-700">Modalidad</label>
-                    <select
-                      value={stage.modalidad}
-                      onChange={(e) => handleStageChange(index, 'modalidad', e.target.value)}
-                      className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                    >
-                      <option value="">Seleccionar</option>
-                      <option value="Virtual">Virtual</option>
-                      <option value="Presencial">Presencial</option>
-                    </select>
-                  </div>
+  <div key={index} className="mb-4 border p-4 rounded-lg relative">
+    {index > 0 && (
+      <MdDelete
+        className="absolute top-2 right-2 text-red-600 cursor-pointer"
+        onClick={() => handleDeleteStage(index)}
+      />
+    )}
+    <h3 className="text-md font-semibold mb-2">Etapa {index + 1}</h3>
+    <div className="mb-2">
+      <label className="block text-sm font-medium text-gray-700">Nombre de la Etapa</label>
+      <input
+        type="text"
+        value={stage.etapa}
+        onChange={(e) => handleStageChange(index, 'etapa', e.target.value)}
+        className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+      />
+    </div>
+    <div className="mb-2">
+      <label className="block text-sm font-medium text-gray-700">Recomendaciones</label>
+      <textarea
+        value={stage.recomendacion}
+        onChange={(e) => handleStageChange(index, 'recomendacion', e.target.value)}
+        className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+      />
+    </div>
+    <div className="mb-2">
+      <label className="block text-sm font-medium text-gray-700">Modalidad</label>
+      <select
+        value={stage.modalidad}
+        onChange={(e) => handleStageChange(index, 'modalidad', e.target.value)}
+        className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+      >
+        <option value="">Seleccionar</option>
+        <option value="Virtual">Virtual</option>
+        <option value="Presencial">Presencial</option>
+      </select>
+    </div>
 
-                  {stage.modalidad === 'Virtual' && (
-                    <>
-                      <div className="mb-2">
-                        <label className="block text-sm font-medium text-gray-700">Plataforma</label>
-                        <input
-                          type="text"
-                          value={stage.direccion || ''}
-                          onChange={(e) => handleStageChange(index, 'direccion', e.target.value)}
-                          className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                        />
-                      </div>
-                      <div className="mb-2">
-                        <label className="block text-sm font-medium text-gray-700">URL de Plataforma</label>
-                        <input
-                          type="text"
-                          value={stage.mapsURL || ''}
-                          onChange={(e) => handleStageChange(index, 'mapsURL', e.target.value)}
-                          className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                        />
-                      </div>
-                    </>
-                  )}
+    {stage.modalidad === 'Virtual' && (
+      <>
+        <div className="mb-2">
+          <label className="block text-sm font-medium text-gray-700">Plataforma</label>
+          <input
+            type="text"
+            value={stage.direccion || ''}
+            onChange={(e) => handleStageChange(index, 'direccion', e.target.value)}
+            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+          />
+        </div>
+        <div className="mb-2">
+          <label className="block text-sm font-medium text-gray-700">URL de Plataforma</label>
+          <input
+            type="text"
+            value={stage.mapsURL || ''}
+            onChange={(e) => handleStageChange(index, 'mapsURL', e.target.value)}
+            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+          />
+        </div>
+      </>
+    )}
 
-                  {/* Campos adicionales para modalidad presencial */}
-                  {stage.modalidad === 'Presencial' && (
-                    <>
-                      <div className="mb-2">
-                        <label className="block text-sm font-medium text-gray-700">Dirección</label>
-                        <input
-                          type="text"
-                          value={stage.direccion || ''}
-                          onChange={(e) => handleStageChange(index, 'direccion', e.target.value)}
-                          className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                        />
-                      </div>
-                      <div className="mb-2">
-                        <label className="block text-sm font-medium text-gray-700">URL de Maps</label>
-                        <input
-                          type="text"
-                          value={stage.mapsURL || ''}
-                          onChange={(e) => handleStageChange(index, 'mapsURL', e.target.value)}
-                          className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                        />
-                      </div>
-                    </>
-                  )}
-                </div>
-              ))}
-              {stages.length < 4 && (
+    {stage.modalidad === 'Presencial' && (
+      <>
+        <div className="mb-2">
+          <label className="block text-sm font-medium text-gray-700">Dirección</label>
+          <input
+            type="text"
+            value={stage.direccion || ''}
+            onChange={(e) => handleStageChange(index, 'direccion', e.target.value)}
+            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+          />
+        </div>
+        <div className="mb-2">
+          <label className="block text-sm font-medium text-gray-700">URL de Maps</label>
+          <input
+            type="text"
+            value={stage.mapsURL || ''}
+            onChange={(e) => handleStageChange(index, 'mapsURL', e.target.value)}
+            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+          />
+        </div>
+      </>
+    )}
+  </div>
+))}
+              {stages.length && (
                 <button
                   onClick={handleAddStage}
                   className="bg-blue-500 text-white p-2 rounded-lg mt-2"
