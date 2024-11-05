@@ -165,7 +165,7 @@ function Entrevistas() {
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-600">No hay candidatos disponibles.</p>
+              <p className="text-center text-gray-600">No hay candidatos disponibles</p>
             )}
           </div>
 
