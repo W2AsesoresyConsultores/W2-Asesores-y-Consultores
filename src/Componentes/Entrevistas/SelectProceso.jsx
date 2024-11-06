@@ -8,7 +8,7 @@ function SelectProceso({ idReclutador, onSelectProceso }) {
     const fetchProcesos = async () => {
       const { data, error } = await supabase
         .from('Programa')
-        .select('id_programa, id_oferta')
+        .select('id_programa, id_oferta, proceso')
         .eq('id_reclutador', idReclutador);
 
       if (error) {
@@ -29,14 +29,16 @@ function SelectProceso({ idReclutador, onSelectProceso }) {
 
   return (
     <div className="mb-4 mt-6">
-      <h3 className="font-medium text-gray-700">Selecciona un Proceso</h3>
+      <h3 className="font-bold text-lg text-gray-700">Procesos del Reclutador</h3>
       <select
         onChange={(e) => handleSelect(e.target.value)}
-        className="border rounded p-2 mt-2">
-        <option value="">Selecciona una oferta</option>
+        className="border rounded p-2 mt-2 w-full"
+        defaultValue=""
+      >
+        <option value="" disabled>Selecciona un Proceso</option>
         {procesos.map((proceso) => (
           <option key={proceso.id_programa} value={proceso.id_oferta}>
-            Oferta {proceso.id_oferta}
+            {proceso.proceso}
           </option>
         ))}
       </select>
