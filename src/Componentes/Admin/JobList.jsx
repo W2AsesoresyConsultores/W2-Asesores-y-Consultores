@@ -93,7 +93,7 @@ const JobList = () => {
               jobs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((job, index) => (
                 <div
                   key={job.id_oferta}
-                  className="bg-white rounded-lg border border-[#e2e8f0] shadow-sm p-6 flex flex-col justify-between"
+                  className="bg-white dark:bg-[#1c252e] rounded-xl dark:border-none border border-[#e2e8f0] shadow-sm p-6 flex flex-col justify-between"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center justify-between w-full">
@@ -101,7 +101,7 @@ const JobList = () => {
                         <img
                           src={job.empresa_img_url}
                           alt="profile"
-                          className="w-12 h-12 rounded-lg border-2 border-white"
+                          className="w-12 h-12 rounded-lg"
                         />
                       </div>
                       <Link to={`/EditJob/${job.id_oferta}`}>

@@ -89,14 +89,14 @@ function HeaderAdmin() {
   };
 
   return (
-    <div className="flex items-center pl-72  justify-between p-4   bg-white shadow-sm fixed w-full z-10 font-lato">
+    <div className="flex items-center pl-72  justify-between p-4 bg-white dark:bg-[#141a21] shadow-sm fixed w-full z-10 font-lato">
 
       {/* Saludo al reclutador */}
-      <div className="text-gray-800">
+      <div className="text-gray-800 dark:text-gray-200">
         <span className="text-lg font-semibold">
           Hola, {getFirstName(profile.nombre)} 👋
         </span>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 dark:text-gray-300">
           Echemos un vistazo a tu actividad hoy.
         </div>
       </div>
@@ -113,7 +113,7 @@ function HeaderAdmin() {
           </div>
         ) : (
           <>
-          <span className="text-gray-800 text-base font-medium w-44 truncate">
+          <span className="text-gray-800 dark:text-gray-200 text-base font-medium w-44 truncate">
               {profile.nombre}
             </span>
             <img
