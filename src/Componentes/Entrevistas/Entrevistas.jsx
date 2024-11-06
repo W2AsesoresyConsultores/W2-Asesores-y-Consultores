@@ -242,25 +242,20 @@ function Entrevistas() {
           <div className="bg-white rounded-lg border p-8 mt-5 max-w-sm ml-0">
             <h2 className="mb-4 font-medium text-gray-600">Candidatos</h2>
             {filteredCandidatos.length > 0 ? (
-              filteredCandidatos.map((candidato, index) => (
-                <div key={index} className="bg-white rounded-lg border p-6 mb-2">
-                  <h3 className="text-lg font-medium">{candidato.name_user || candidato.nombre}</h3>
-                  <p className="text-sm text-gray-500">DNI: {candidato.dni}</p>
-                  <p className="text-sm text-gray-500 mt-1">Celular: {candidato.telefono}</p>
-                  <p className="text-sm text-gray-500">Fecha: {formatDate(candidato.fecha_postulacion || candidato.fecha)}</p>
-                  
-                  <select
-                    className="mt-2 bg-blue-500 text-white rounded px-2 py-1"
-                    onChange={(e) => moveCandidateToStage(candidato, e.target.value)}
-                  >
-                    <option value="">Selecciona una etapa</option>
-                    <option value="">Ninguna</option>
-                    {programaData[0]?.etapas?.map((etapa, idx) => (
-                      <option key={idx} value={etapa.etapa}>{etapa.etapa}</option>
-                    ))}
-                  </select>
-                </div>
-              ))
+              filteredCandidatos.map((candidato, index) => {
+                const isInStage = programaData[0]?.etapas.some(etapa => candidato.estado_etapas === etapa.etapa);
+                return !isInStage ? (
+                  <CandidateStageMover 
+                    key={index}
+                    candidate={candidato}
+                    programStages={programaData[0]?.etapas || []}
+                    idOferta={idOferta}
+                    setCandidatos={setCandidatos}
+                    setFilteredCandidatos={setFilteredCandidatos}
+                    setCandidatosNoAuth={setCandidatosNoAuth}
+                  />
+                ) : null;
+              })
             ) : (
               <p className="text-center text-gray-600">No hay candidatos disponibles.</p>
             )}
@@ -274,12 +269,15 @@ function Entrevistas() {
                   <div className="space-y-4">
                     {/* Filtrar candidatos que pertenecen a la etapa actual */}
                     {filteredCandidatos.filter(candidato => candidato.estado_etapas === etapa.etapa).map((candidato, idx) => (
-                      <div key={idx} className="bg-white rounded-lg border p-4 mb-2">
-                        <h3 className="text-lg font-medium">{candidato.name_user || candidato.nombre}</h3>
-                        <p className="text-sm text-gray-500">DNI: {candidato.dni}</p>
-                        <p className="text-sm text-gray-500 mt-1">Celular: {candidato.telefono}</p>
-                        <p className="text-sm text-gray-500">Fecha: {formatDate(candidato.fecha_postulacion || candidato.fecha)}</p>
-                      </div>
+                      <CandidateStageMover 
+                        key={idx}
+                        candidate={candidato}
+                        programStages={programaData[0]?.etapas || []}
+                        idOferta={idOferta}
+                        setCandidatos={setCandidatos}
+                        setFilteredCandidatos={setFilteredCandidatos}
+                        setCandidatosNoAuth={setCandidatosNoAuth}
+                      />
                     ))}
                   </div>
                 </div>
