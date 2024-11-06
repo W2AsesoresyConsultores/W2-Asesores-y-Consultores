@@ -7,6 +7,7 @@ import { UserAuth } from '../../Context/AuthContext';
 import Filter from './Filter';
 import CargarExcel from './CargarExcel';
 import CrearCandidatoModal from './CrearCandidatoModal';
+import DescargarPlantilla from './DescargarPlantilla';
 
 function Entrevistas() {
   const { user } = UserAuth();
@@ -227,8 +228,10 @@ function Entrevistas() {
       <HeaderAdmin />
       <MenuAdmin />
       <div className="w-full h-full bg-[#fafbff] flex flex-col p-8 font-dmsans overflow-x-auto pl-72 pt-28">
-        <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
-
+      <div className="flex space-x-4">
+          <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
+          <DescargarPlantilla />
+        </div>
         <Filter onFilter={handleFilter} />
         <h2 className="text-2xl mt-7 mb-4 font-bold">
           Proceso - {puesto || 'Proceso Desconocido'} - {programaData[0]?.empresa || 'Empresa Desconocida'}
