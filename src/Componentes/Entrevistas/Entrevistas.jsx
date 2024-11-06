@@ -6,6 +6,8 @@ import MenuAdmin from '../Admin/MenuAdmin';
 import { UserAuth } from '../../Context/AuthContext';
 import Filter from './Filter';
 import CargarExcel from './CargarExcel';
+import CrearCandidatoModal from './CrearCandidatoModal';
+import DescargarPlantilla from './DescargarPlantilla';
 
 function Entrevistas() {
   const { user } = UserAuth();
@@ -62,7 +64,7 @@ function Entrevistas() {
 
       const { data: postulacionData, error: postulacionError } = await supabase
         .from('Postulacion')
-        .select('name_user, telefono, dni, fecha_postulacion')
+        .select('name_user, telefono, dni, fecha_postulacion, estado_etapas')
         .eq('id_oferta', id_oferta)
         .eq('estado', 'apto');
 
@@ -75,7 +77,7 @@ function Entrevistas() {
 
       const { data: noAuthData, error: noAuthError } = await supabase
         .from('CandidatosNoAuth')
-        .select('nombre, telefono, dni, fecha')
+        .select('nombre, telefono, dni, fecha, estado_etapas')
         .eq('id_oferta', id_oferta)
         .eq('estado', 'apto');
 
@@ -100,7 +102,7 @@ function Entrevistas() {
     setFilteredCandidatos([...candidatos, ...candidatosNoAuth].sort((a, b) => {
       const dateA = new Date(a.fecha_postulacion || a.fecha);
       const dateB = new Date(b.fecha_postulacion || b.fecha);
-      return dateB - dateA; // Orden descendente que existe si
+      return dateB - dateA;
     }));
   }, [candidatos, candidatosNoAuth]);
 
@@ -136,21 +138,109 @@ function Entrevistas() {
     setFilteredCandidatos(filtered);
   };
 
+  const moveCandidateToStage = async (candidate, etapa) => {
+    // Si se selecciona "Ninguna"
+    if (etapa === "Ninguna") {
+      // Eliminar de CandidatosNoAuth
+      const { error: noAuthError } = await supabase
+        .from('CandidatosNoAuth')
+        .delete()
+        .eq('id_oferta', id_oferta)
+        .eq('dni', candidate.dni);
+  
+      if (noAuthError) {
+        console.error('Error al eliminar candidato de CandidatosNoAuth:', noAuthError);
+      } else {
+        // Actualizar estado local para CandidatosNoAuth
+        setCandidatosNoAuth(prev => prev.filter(c => c.dni !== candidate.dni));
+      }
+  
+      // Eliminar de Postulacion
+      const { error: postulacionError } = await supabase
+        .from('Postulacion')
+        .delete()
+        .eq('id_oferta', id_oferta)
+        .eq('dni', candidate.dni);
+  
+      if (postulacionError) {
+        console.error('Error al eliminar candidato de Postulacion:', postulacionError);
+      } else {
+        // Actualizar estado local para Candidatos
+        setCandidatos(prev => prev.filter(c => c.dni !== candidate.dni));
+      }
+  
+      // Actualizar los candidatos filtrados
+      setFilteredCandidatos(prev => prev.filter(c => c.dni !== candidate.dni));
+      return;
+    }
+  
+    // Actualizar estado para CandidatosNoAuth
+    const { error: updateNoAuthError } = await supabase
+      .from('CandidatosNoAuth')
+      .update({ estado_etapas: etapa })
+      .eq('id_oferta', id_oferta)
+      .eq('dni', candidate.dni);
+    
+    if (updateNoAuthError) {
+      console.error('Error al mover candidato a CandidatosNoAuth:', updateNoAuthError);
+    } else {
+      setCandidatosNoAuth(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
+      setFilteredCandidatos(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
+    }
+  
+    // Actualizar estado para Postulacion
+    const { error: updatePostulacionError } = await supabase
+      .from('Postulacion')
+      .update({ estado_etapas: etapa })
+      .eq('id_oferta', id_oferta)
+      .eq('dni', candidate.dni);
+  
+    if (updatePostulacionError) {
+      console.error('Error al mover candidato a Postulacion:', updatePostulacionError);
+    } else {
+      setCandidatos(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
+      setFilteredCandidatos(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
+    }
+  };
+
   return (
     <div className="w-full h-screen flex">
       <HeaderAdmin />
       <MenuAdmin />
       <div className="w-full h-full bg-[#fafbff] flex flex-col p-8 font-dmsans overflow-x-auto pl-72 pt-28">
-        <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
-
+      <div className="flex space-x-4">
+          <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
+          <DescargarPlantilla />
+        </div>
         <Filter onFilter={handleFilter} />
         <h2 className="text-2xl mt-7 mb-4 font-bold">
           Proceso - {puesto || 'Proceso Desconocido'} - {programaData[0]?.empresa || 'Empresa Desconocida'}
         </h2>
-
+        <CrearCandidatoModal idOferta={idOferta}
+          idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} />
         <div className="flex space-x-4">
           <div className="bg-white rounded-lg border p-8 mt-5 max-w-sm ml-0">
-            <h2 className="mb-4 font-medium text-gray-700 ">Candidatos</h2>
+            <h2 className="mb-4 font-medium text-gray-600">Candidatos</h2>
             {filteredCandidatos.length > 0 ? (
               filteredCandidatos.map((candidato, index) => (
                 <div key={index} className="bg-white rounded-lg border p-6 mb-2">
@@ -158,6 +248,17 @@ function Entrevistas() {
                   <p className="text-sm text-gray-500">DNI: {candidato.dni}</p>
                   <p className="text-sm text-gray-500 mt-1">Celular: {candidato.telefono}</p>
                   <p className="text-sm text-gray-500">Fecha: {formatDate(candidato.fecha_postulacion || candidato.fecha)}</p>
+                  
+                  <select
+                    className="mt-2 bg-blue-500 text-white rounded px-2 py-1"
+                    onChange={(e) => moveCandidateToStage(candidato, e.target.value)}
+                  >
+                    <option value="">Selecciona una etapa</option>
+                    <option value="">Ninguna</option>
+                    {programaData[0]?.etapas?.map((etapa, idx) => (
+                      <option key={idx} value={etapa.etapa}>{etapa.etapa}</option>
+                    ))}
+                  </select>
                 </div>
               ))
             ) : (
@@ -168,16 +269,25 @@ function Entrevistas() {
           {programaData.length > 0 && (
             <div className="flex space-x-4 flex-grow">
               {programaData[0].etapas?.map((etapa, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md p-8 mt-5 flex-grow">
-                  <h2 className="mb-4 font-medium text-gray-700">{etapa.etapa}</h2>
+                <div key={index} className="bg-gray-200 rounded-lg shadow-md p-8 mt-5 flex-grow">
+                  <h2 className="mb-4 font-medium text-gray-600">{etapa.etapa}</h2>
                   <div className="space-y-4">
-
+                    {/* Filtrar candidatos que pertenecen a la etapa actual */}
+                    {filteredCandidatos.filter(candidato => candidato.estado_etapas === etapa.etapa).map((candidato, idx) => (
+                      <div key={idx} className="bg-white rounded-lg border p-4 mb-2">
+                        <h3 className="text-lg font-medium">{candidato.name_user || candidato.nombre}</h3>
+                        <p className="text-sm text-gray-500">DNI: {candidato.dni}</p>
+                        <p className="text-sm text-gray-500 mt-1">Celular: {candidato.telefono}</p>
+                        <p className="text-sm text-gray-500">Fecha: {formatDate(candidato.fecha_postulacion || candidato.fecha)}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
           )}
         </div>
+        
       </div>
     </div>
   );
