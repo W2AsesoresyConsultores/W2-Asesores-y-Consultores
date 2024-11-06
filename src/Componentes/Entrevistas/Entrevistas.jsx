@@ -8,12 +8,14 @@ import Filter from './Filter';
 import CargarExcel from './CargarExcel';
 import CrearCandidatoModal from './CrearCandidatoModal';
 import DescargarPlantilla from './DescargarPlantilla';
+import CandidateStageMover from './CandidateStageMover';
+import SelectProceso from './SelectProceso'; // Importar el componente
 
 function Entrevistas() {
   const { user } = UserAuth();
   const { id_oferta } = useParams();
   const [idReclutador, setIdReclutador] = useState(null);
-  const [idOferta, setIdOferta] = useState(null);
+  const [idOferta, setIdOferta] = useState(id_oferta);
   const [candidatos, setCandidatos] = useState([]);
   const [candidatosNoAuth, setCandidatosNoAuth] = useState([]);
   const [programaData, setProgramaData] = useState([]);
@@ -46,57 +48,72 @@ function Entrevistas() {
       const idReclutador = profileData.id;
       setIdReclutador(idReclutador);
 
-      const { data: ofertaData, error: ofertaError } = await supabase
-        .from('Oferta')
-        .select('id_oferta, puesto, empresa')
-        .eq('id_oferta', id_oferta)
-        .order('fecha_publicacion', { ascending: false })
-        .limit(1)
-        .single();
+      if (idOferta) {
+        const { data: ofertaData, error: ofertaError } = await supabase
+          .from('Oferta')
+          .select('id_oferta, puesto, empresa')
+          .eq('id_oferta', idOferta)
+          .order('fecha_publicacion', { ascending: false })
+          .limit(1)
+          .single();
 
-      if (ofertaError || !ofertaData) {
-        console.error('Error al obtener datos de la oferta:', ofertaError);
-        return;
+        if (ofertaError || !ofertaData) {
+          console.error('Error al obtener datos de la oferta:', ofertaError);
+          return;
+        }
+
+        setIdOferta(ofertaData.id_oferta);
+        setPuesto(ofertaData.puesto);
+
+        const { data: postulacionData, error: postulacionError } = await supabase
+          .from('Postulacion')
+          .select('name_user, telefono, dni, fecha_postulacion, estado_etapas')
+          .eq('id_oferta', idOferta)
+          .eq('estado', 'apto');
+
+        if (postulacionError) {
+          console.error('Error al obtener postulaciones:', postulacionError);
+          return;
+        }
+
+        setCandidatos(postulacionData);
+
+        const { data: noAuthData, error: noAuthError } = await supabase
+          .from('CandidatosNoAuth')
+          .select('nombre, telefono, dni, fecha, estado_etapas')
+          .eq('id_oferta', idOferta)
+          .eq('estado', 'apto');
+
+        if (noAuthError) {
+          console.error('Error al obtener CandidatosNoAuth:', noAuthError);
+          return;
+        }
+
+        setCandidatosNoAuth(noAuthData);
+        fetchProgramaData(idOferta);
       }
-
-      setIdOferta(ofertaData.id_oferta);
-      setPuesto(ofertaData.puesto);
-
-      const { data: postulacionData, error: postulacionError } = await supabase
-        .from('Postulacion')
-        .select('name_user, telefono, dni, fecha_postulacion, estado_etapas')
-        .eq('id_oferta', id_oferta)
-        .eq('estado', 'apto');
-
-      if (postulacionError) {
-        console.error('Error al obtener postulaciones:', postulacionError);
-        return;
-      }
-
-      setCandidatos(postulacionData);
-
-      const { data: noAuthData, error: noAuthError } = await supabase
-        .from('CandidatosNoAuth')
-        .select('nombre, telefono, dni, fecha, estado_etapas')
-        .eq('id_oferta', id_oferta)
-        .eq('estado', 'apto');
-
-      if (noAuthError) {
-        console.error('Error al obtener CandidatosNoAuth:', noAuthError);
-        return;
-      }
-
-      setCandidatosNoAuth(noAuthData);
     };
 
     fetchData();
-  }, [user, id_oferta]);
+  }, [user, idOferta]);
 
-  useEffect(() => {
-    if (id_oferta) {
-      fetchProgramaData().then(data => setProgramaData(data));
+  const fetchProgramaData = async (ofertaId) => {
+    try {
+      const { data: programaData, error } = await supabase
+        .from('Programa')
+        .select('id_programa, empresa, lugar, etapas')
+        .eq('id_oferta', ofertaId);
+
+      if (error) {
+        console.error('Error al obtener datos del Programa:', error);
+        return [];
+      }
+
+      setProgramaData(programaData);
+    } catch (err) {
+      console.error('Error en la solicitud:', err);
     }
-  }, [id_oferta]);
+  };
 
   useEffect(() => {
     setFilteredCandidatos([...candidatos, ...candidatosNoAuth].sort((a, b) => {
@@ -105,25 +122,6 @@ function Entrevistas() {
       return dateB - dateA;
     }));
   }, [candidatos, candidatosNoAuth]);
-
-  const fetchProgramaData = async () => {
-    try {
-      const { data: programaData, error } = await supabase
-        .from('Programa')
-        .select('id_programa, empresa, lugar, etapas')
-        .eq('id_oferta', id_oferta);
-
-      if (error) {
-        console.error('Error al obtener datos del Programa:', error);
-        return [];
-      }
-
-      return programaData;
-    } catch (err) {
-      console.error('Error en la solicitud:', err);
-      return [];
-    }
-  };
 
   const handleFilter = (query) => {
     const lowerCaseQuery = query.toLowerCase();
@@ -138,89 +136,8 @@ function Entrevistas() {
     setFilteredCandidatos(filtered);
   };
 
-  const moveCandidateToStage = async (candidate, etapa) => {
-    // Si se selecciona "Ninguna"
-    if (etapa === "Ninguna") {
-      // Eliminar de CandidatosNoAuth
-      const { error: noAuthError } = await supabase
-        .from('CandidatosNoAuth')
-        .delete()
-        .eq('id_oferta', id_oferta)
-        .eq('dni', candidate.dni);
-  
-      if (noAuthError) {
-        console.error('Error al eliminar candidato de CandidatosNoAuth:', noAuthError);
-      } else {
-        // Actualizar estado local para CandidatosNoAuth
-        setCandidatosNoAuth(prev => prev.filter(c => c.dni !== candidate.dni));
-      }
-  
-      // Eliminar de Postulacion
-      const { error: postulacionError } = await supabase
-        .from('Postulacion')
-        .delete()
-        .eq('id_oferta', id_oferta)
-        .eq('dni', candidate.dni);
-  
-      if (postulacionError) {
-        console.error('Error al eliminar candidato de Postulacion:', postulacionError);
-      } else {
-        // Actualizar estado local para Candidatos
-        setCandidatos(prev => prev.filter(c => c.dni !== candidate.dni));
-      }
-  
-      // Actualizar los candidatos filtrados
-      setFilteredCandidatos(prev => prev.filter(c => c.dni !== candidate.dni));
-      return;
-    }
-  
-    // Actualizar estado para CandidatosNoAuth
-    const { error: updateNoAuthError } = await supabase
-      .from('CandidatosNoAuth')
-      .update({ estado_etapas: etapa })
-      .eq('id_oferta', id_oferta)
-      .eq('dni', candidate.dni);
-    
-    if (updateNoAuthError) {
-      console.error('Error al mover candidato a CandidatosNoAuth:', updateNoAuthError);
-    } else {
-      setCandidatosNoAuth(prev => prev.map(c => {
-        if (c.dni === candidate.dni) {
-          return { ...c, estado_etapas: etapa };
-        }
-        return c;
-      }));
-      setFilteredCandidatos(prev => prev.map(c => {
-        if (c.dni === candidate.dni) {
-          return { ...c, estado_etapas: etapa };
-        }
-        return c;
-      }));
-    }
-  
-    // Actualizar estado para Postulacion
-    const { error: updatePostulacionError } = await supabase
-      .from('Postulacion')
-      .update({ estado_etapas: etapa })
-      .eq('id_oferta', id_oferta)
-      .eq('dni', candidate.dni);
-  
-    if (updatePostulacionError) {
-      console.error('Error al mover candidato a Postulacion:', updatePostulacionError);
-    } else {
-      setCandidatos(prev => prev.map(c => {
-        if (c.dni === candidate.dni) {
-          return { ...c, estado_etapas: etapa };
-        }
-        return c;
-      }));
-      setFilteredCandidatos(prev => prev.map(c => {
-        if (c.dni === candidate.dni) {
-          return { ...c, estado_etapas: etapa };
-        }
-        return c;
-      }));
-    }
+  const handleSelectProceso = (selectedIdOferta) => {
+    setIdOferta(selectedIdOferta);
   };
 
   return (
@@ -228,16 +145,16 @@ function Entrevistas() {
       <HeaderAdmin />
       <MenuAdmin />
       <div className="w-full h-full bg-[#fafbff] flex flex-col p-8 font-dmsans overflow-x-auto pl-72 pt-28">
-      <div className="flex space-x-4">
+        <div className="flex space-x-4">
           <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
           <DescargarPlantilla />
         </div>
+        <SelectProceso idReclutador={idReclutador} onSelectProceso={handleSelectProceso} />
         <Filter onFilter={handleFilter} />
         <h2 className="text-2xl mt-7 mb-4 font-bold">
           Proceso - {puesto || 'Proceso Desconocido'} - {programaData[0]?.empresa || 'Empresa Desconocida'}
         </h2>
-        <CrearCandidatoModal idOferta={idOferta}
-          idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} />
+        <CrearCandidatoModal idOferta={idOferta} idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} />
         <div className="flex space-x-4">
           <div className="bg-white rounded-lg border p-8 mt-5 max-w-sm ml-0">
             <h2 className="mb-4 font-medium text-gray-600">Candidatos</h2>
@@ -285,7 +202,6 @@ function Entrevistas() {
             </div>
           )}
         </div>
-        
       </div>
     </div>
   );

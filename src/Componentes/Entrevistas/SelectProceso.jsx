@@ -28,7 +28,7 @@ function SelectProceso({ idReclutador, onSelectProceso }) {
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-4 mt-6">
       <h3 className="font-medium text-gray-700">Selecciona un Proceso</h3>
       <select
         onChange={(e) => handleSelect(e.target.value)}
