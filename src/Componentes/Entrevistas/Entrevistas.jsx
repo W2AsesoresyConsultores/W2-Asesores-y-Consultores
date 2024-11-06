@@ -6,6 +6,7 @@ import MenuAdmin from '../Admin/MenuAdmin';
 import { UserAuth } from '../../Context/AuthContext';
 import Filter from './Filter';
 import CargarExcel from './CargarExcel';
+import CrearCandidatoModal from './CrearCandidatoModal';
 
 function Entrevistas() {
   const { user } = UserAuth();
@@ -136,66 +137,88 @@ function Entrevistas() {
     setFilteredCandidatos(filtered);
   };
 
-  // Function to move candidate to a specific stage
   const moveCandidateToStage = async (candidate, etapa) => {
-    // Si se selecciona "Ninguna", actualiza el estado y no hace nada más
+    // Si se selecciona "Ninguna"
     if (etapa === "Ninguna") {
-      const { error } = await supabase
+      // Eliminar de CandidatosNoAuth
+      const { error: noAuthError } = await supabase
         .from('CandidatosNoAuth')
-        .update({ estado_etapas: "Ninguna" })
+        .delete()
         .eq('id_oferta', id_oferta)
         .eq('dni', candidate.dni);
   
-      if (error) {
-        console.error('Error al mover candidato:', error);
+      if (noAuthError) {
+        console.error('Error al eliminar candidato de CandidatosNoAuth:', noAuthError);
       } else {
-        // Actualiza el estado local de los candidatos
-        setCandidatosNoAuth(prev => {
-          const updatedCandidatos = prev.map(c => {
-            if (c.dni === candidate.dni) {
-              return { ...c, estado_etapas: "Ninguna" }; // Actualiza la etapa del candidato
-            }
-            return c;
-          });
-          return updatedCandidatos.filter(c => c.estado_etapas !== "Ninguna"); // Opcional: filtra candidatos con estado "Ninguna"
-        });
-  
-        // También actualiza filteredCandidatos si es necesario
-        setFilteredCandidatos(prev => {
-          return prev.filter(c => c.dni !== candidate.dni); // Filtra el candidato que fue marcado como "Ninguna"
-        });
+        // Actualizar estado local para CandidatosNoAuth
+        setCandidatosNoAuth(prev => prev.filter(c => c.dni !== candidate.dni));
       }
+  
+      // Eliminar de Postulacion
+      const { error: postulacionError } = await supabase
+        .from('Postulacion')
+        .delete()
+        .eq('id_oferta', id_oferta)
+        .eq('dni', candidate.dni);
+  
+      if (postulacionError) {
+        console.error('Error al eliminar candidato de Postulacion:', postulacionError);
+      } else {
+        // Actualizar estado local para Candidatos
+        setCandidatos(prev => prev.filter(c => c.dni !== candidate.dni));
+      }
+  
+      // Actualizar los candidatos filtrados
+      setFilteredCandidatos(prev => prev.filter(c => c.dni !== candidate.dni));
+      return;
+    }
+  
+    // Actualizar estado para CandidatosNoAuth
+    const { error: updateNoAuthError } = await supabase
+      .from('CandidatosNoAuth')
+      .update({ estado_etapas: etapa })
+      .eq('id_oferta', id_oferta)
+      .eq('dni', candidate.dni);
+    
+    if (updateNoAuthError) {
+      console.error('Error al mover candidato a CandidatosNoAuth:', updateNoAuthError);
     } else {
-      const { error } = await supabase
-        .from('CandidatosNoAuth')
-        .update({ estado_etapas: etapa })
-        .eq('id_oferta', id_oferta)
-        .eq('dni', candidate.dni);
+      setCandidatosNoAuth(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
+      setFilteredCandidatos(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
+    }
   
-      if (error) {
-        console.error('Error al mover candidato:', error);
-      } else {
-        // Actualiza el estado local de los candidatos
-        setCandidatosNoAuth(prev => {
-          const updatedCandidatos = prev.map(c => {
-            if (c.dni === candidate.dni) {
-              return { ...c, estado_etapas: etapa }; // Actualiza la etapa del candidato
-            }
-            return c;
-          });
-          return updatedCandidatos;
-        });
+    // Actualizar estado para Postulacion
+    const { error: updatePostulacionError } = await supabase
+      .from('Postulacion')
+      .update({ estado_etapas: etapa })
+      .eq('id_oferta', id_oferta)
+      .eq('dni', candidate.dni);
   
-        // También actualiza filteredCandidatos si es necesario
-        setFilteredCandidatos(prev => {
-          return prev.map(c => {
-            if (c.dni === candidate.dni) {
-              return { ...c, estado_etapas: etapa }; // Actualiza la etapa del candidato
-            }
-            return c;
-          });
-        });
-      }
+    if (updatePostulacionError) {
+      console.error('Error al mover candidato a Postulacion:', updatePostulacionError);
+    } else {
+      setCandidatos(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
+      setFilteredCandidatos(prev => prev.map(c => {
+        if (c.dni === candidate.dni) {
+          return { ...c, estado_etapas: etapa };
+        }
+        return c;
+      }));
     }
   };
 
@@ -210,7 +233,8 @@ function Entrevistas() {
         <h2 className="text-2xl mt-7 mb-4 font-bold">
           Proceso - {puesto || 'Proceso Desconocido'} - {programaData[0]?.empresa || 'Empresa Desconocida'}
         </h2>
-
+        <CrearCandidatoModal idOferta={idOferta}
+          idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} />
         <div className="flex space-x-4">
           <div className="bg-white rounded-lg border p-8 mt-5 max-w-sm ml-0">
             <h2 className="mb-4 font-medium text-gray-600">Candidatos</h2>
@@ -260,6 +284,7 @@ function Entrevistas() {
             </div>
           )}
         </div>
+        
       </div>
     </div>
   );
