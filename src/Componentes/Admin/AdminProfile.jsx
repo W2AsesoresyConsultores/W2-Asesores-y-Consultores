@@ -141,7 +141,14 @@ const AdminProfile = () => {
       <MenuAdmin />
 
       {/* Loading Spinner envuelve el contenido principal */}
-      <Box display="flex" justifyContent="center" alignItems="center" pt={20} pl={28}>
+      <Box display="flex" justifyContent="center" alignItems="center"  pl={28}
+       sx={{
+    backgroundColor: (theme) => (theme.palette.mode === 'light' ? '#f5f5f5' : '#141a21'),
+    color: (theme) => (theme.palette.mode === 'light' ? '#333' : '#fff'),
+    minHeight: '100vh',
+    width: '100%',
+  }}
+      >
         {loading ? (
           <div className="flex pt-40  w-full h-full justify-center">
           <div className="w-3/4 md:w-1/2">

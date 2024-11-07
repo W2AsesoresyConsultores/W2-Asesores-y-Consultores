@@ -12,49 +12,68 @@ export const JobsProvider = ({ children }) => {
   const { user } = UserAuth();
   const [jobs, setJobs] = useState([]);
   const [userSearchResults, setUserSearchResults] = useState([]);
+  const [allActiveJobs, setAllActiveJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-const fetchJobs = async () => {
-  if (!user) return;
+  const fetchJobs = async () => {
+    if (!user) return;
 
-  const { data: profileData, error: profileError } = await supabase
-    .from('perfiles')
-    .select('id')
-    .eq('id', user.id)
-    .single();
+    const { data: profileData, error: profileError } = await supabase
+      .from('perfiles')
+      .select('id')
+      .eq('id', user.id)
+      .single();
 
-  if (profileError) {
-    console.error('Error fetching profile:', profileError);
-    return;
-  }
+    if (profileError) {
+      console.error('Error fetching profile:', profileError);
+      return;
+    }
 
-  const idReclutador = profileData.id;
+    const idReclutador = profileData.id;
 
-  const { data, error } = await supabase
-    .from('Oferta')
-    .select('*')
-    .eq('id_reclutador', idReclutador)
-    .order('fecha_publicacion', { ascending: false }); // Order by date
+    const { data, error } = await supabase
+      .from('Oferta')
+      .select('*')
+      .eq('id_reclutador', idReclutador)
+      .order('fecha_publicacion', { ascending: false });
 
-  if (error) {
-    console.error('Error fetching jobs:', error);
-  } else {
-    const validJobs = data.filter((job) => job.puesto !== undefined && job.puesto !== null);
-    setJobs(validJobs);
-    setUserSearchResults(validJobs);
-  }
-};
+    if (error) {
+      console.error('Error fetching jobs:', error);
+    } else {
+      const validJobs = data.filter((job) => job.puesto !== undefined && job.puesto !== null);
+      setJobs(validJobs);
+      setUserSearchResults(validJobs);
+    }
+  };
+
+  const fetchAllActiveJobs = async () => {
+    const { data, error } = await supabase
+      .from('Oferta')
+      .select('*')
+      .eq('estado', 'activa')
+      .order('fecha_publicacion', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching all active jobs:', error);
+    } else {
+      setAllActiveJobs(data);
+    }
+  };
 
   useEffect(() => {
     fetchJobs();
+    fetchAllActiveJobs();
 
     const subscription = supabase
       .channel('jobs-changes')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Oferta' }, (payload) => {
         const newJob = payload.new;
-        if (newJob.id_reclutador === user.id) { // Ensure it's for the current recruiter
+        if (newJob.id_reclutador === user.id) {
           setJobs((prevJobs) => [...prevJobs, newJob]);
           setUserSearchResults((prevResults) => [...prevResults, newJob]);
+        }
+        if (newJob.estado === 'activa') {
+          setAllActiveJobs((prevJobs) => [...prevJobs, newJob]);
         }
       })
       .subscribe();
@@ -65,7 +84,7 @@ const fetchJobs = async () => {
   }, [user]);
 
   useEffect(() => {
-    const filteredJobs = jobs.filter(job => 
+    const filteredJobs = jobs.filter(job =>
       removeAccents(job.puesto.toLowerCase()).includes(removeAccents(searchTerm.toLowerCase()))
     );
     setUserSearchResults(filteredJobs);
@@ -76,7 +95,8 @@ const fetchJobs = async () => {
       .from('Oferta')
       .select('*')
       .ilike('puesto', `%${keyword}%`)
-      .ilike('ubicacion', `%${location}%`);
+      .ilike('ubicacion', `%${location}%`)
+      .eq('estado', 'activa');
 
     if (error) {
       console.error('Error searching jobs:', error);
@@ -100,11 +120,23 @@ const fetchJobs = async () => {
     } else {
       setJobs(prevJobs => prevJobs.filter(job => job.id_oferta !== id_oferta));
       setUserSearchResults(prevResults => prevResults.filter(job => job.id_oferta !== id_oferta));
+      setAllActiveJobs(prevJobs => prevJobs.filter(job => job.id_oferta !== id_oferta));
     }
   };
 
   return (
-    <JobsContext.Provider value={{ jobs, setJobs, searchJobs, userSearchResults, resetSearchResults, searchTerm, setSearchTerm, deleteJob, fetchJobs }}>
+    <JobsContext.Provider value={{
+      jobs,
+      setJobs,
+      searchJobs,
+      userSearchResults,
+      resetSearchResults,
+      searchTerm,
+      setSearchTerm,
+      deleteJob,
+      fetchJobs,
+      allActiveJobs, // Expose the new state
+    }}>
       {children}
     </JobsContext.Provider>
   );

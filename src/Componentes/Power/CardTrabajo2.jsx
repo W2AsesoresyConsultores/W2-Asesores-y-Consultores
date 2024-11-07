@@ -37,6 +37,7 @@ function CardTrabajo2({ job, onSelectJob, isSelected }) {
       fetchNombreReclutador();
     }
   }, [id_reclutador]);
+  
 
   dayjs.extend(relativeTime);
   dayjs.locale('es'); // Configurar dayjs para usar español

@@ -152,7 +152,7 @@ function Entrevistas() {
     <div className="w-full h-screen flex">
       <HeaderAdmin />
       <MenuAdmin />
-      <div className="w-full h-full bg-[#fafbff] flex flex-col p-8 font-dmsans overflow-x-auto pl-72 pt-28">
+      <div className="w-full h-full bg-[#fafbff] flex flex-col p-8 font-dmsans pl-72 pt-28">
         <div className="flex space-x-4">
           <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
           <DescargarPlantilla />
