@@ -5,7 +5,7 @@ import JobsContext from '../../Context/JobsContext';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function TrabajosContainer2() {
-  const { userSearchResults } = useContext(JobsContext);
+  const { allActiveJobs } = useContext(JobsContext);
   const [selectedJob, setSelectedJob] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
@@ -23,23 +23,22 @@ function TrabajosContainer2() {
   }, []);
 
   useEffect(() => {
-    const filteredResults = userSearchResults
-      .filter(job => job.estado === 'activa')
+    const filteredResults = allActiveJobs
       .sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
 
-    setSelectedJob(filteredResults[0] || null); // Manejo de trabajos filtrados vacíos
-  }, [userSearchResults]);
+    setSelectedJob(filteredResults[0] || null);
+  }, [allActiveJobs]);
 
   useEffect(() => {
-    if (id_oferta && userSearchResults.length > 0) {
-      const foundJob = userSearchResults.find(job => job.id_oferta === parseInt(id_oferta, 10) && job.estado === 'activa');
+    if (id_oferta && allActiveJobs.length > 0) {
+      const foundJob = allActiveJobs.find(job => job.id_oferta === parseInt(id_oferta, 10));
       if (foundJob) {
         setSelectedJob(foundJob);
       } else {
-        navigate('/Power'); // Redirigir si no se encuentra el trabajo
+        navigate('/Power');
       }
     }
-  }, [id_oferta, userSearchResults, navigate]);
+  }, [id_oferta, allActiveJobs, navigate]);
 
   const handleCardClick = (job) => {
     if (isMobile) {
@@ -59,12 +58,11 @@ function TrabajosContainer2() {
             scrollbarWidth: 'none'
           }}
         >
-          {userSearchResults
-            .filter(job => job.estado === 'activa')
+          {allActiveJobs
             .sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion))
             .map(job => (
               <CardTrabajo2
-                key={job.id_oferta} // Usar id_oferta como clave
+                key={job.id_oferta}
                 job={job}
                 onSelectJob={() => handleCardClick(job)}
                 isSelected={selectedJob === job}
