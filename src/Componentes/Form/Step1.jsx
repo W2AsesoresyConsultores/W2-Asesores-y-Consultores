@@ -29,7 +29,7 @@ const Step1 = ({ data, handleChange, nextStep }) => {
                 
             />
             <TextField
-                label="Ubicación"
+                label="Lugar"
                 variant="outlined"
                 name="ubicacion"
                 value={data.ubicacion}

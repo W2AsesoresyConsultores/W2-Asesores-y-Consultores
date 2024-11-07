@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import QuestionsModal from "./QuestionsModal"; // Importar el componente QuestionsModal
 import { supabase } from "../../supabase/supabase.config"; // Importar cliente de Supabase
@@ -9,7 +8,6 @@ import dayjs from "dayjs";
 import "dayjs/locale/es"; // Importar el idioma español
 import relativeTime from "dayjs/plugin/relativeTime";
 import ShareButton from "./ShareButton"; // Import the ShareButton component
-import { IoLogoWhatsapp } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 
 function InfoJob({ selectedJob }) {
@@ -217,14 +215,6 @@ function InfoJob({ selectedJob }) {
         >
           {hasApplied ? "YA HAS POSTULADO" : "POSTULARME"}
         </button>
-        {whatsappBaseUrl && (
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-            <button className="bg-[#00d35e] text-white font-bold py-2 px-4 rounded-full flex items-center">
-              <IoLogoWhatsapp className="mr-2" size={24} />
-              WhatsApp
-            </button>
-          </a>
-        )}
       </div>
       <QuestionsModal
         isOpen={isQuestionsModalOpen}
