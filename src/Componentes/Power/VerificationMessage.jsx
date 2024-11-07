@@ -21,7 +21,7 @@ function VerificationMessage() {
           boxShadow: 3,
         }}
       >
-        <Typography component="h1" variant="h5" sx={{ mb: 2, color: '#3f51b5' }}>
+        <Typography component="h1" variant="h5" align="center" sx={{ mb: 2, color: '#3f51b5' }}>
           ¡Estás a un paso de ingresar a Power!
         </Typography>
         <Typography variant="body1" align="center" sx={{ mb: 3 }}>
