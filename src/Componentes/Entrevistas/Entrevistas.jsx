@@ -176,9 +176,9 @@ function Entrevistas() {
           Proceso - {puesto || 'Proceso Desconocido'} - {programaData[0]?.empresa || 'Empresa Desconocida'}
         </h2>
 
-        <div className="flex gap-2 justify-between  w-auto overflow-x-scroll">
-          <div className="bg-cyan-50 rounded-lg border p-2 w-56 mt-5  ml-0">
-            <h2 className="mb-4 font-medium text-gray-800 flex items-center justify-around">Candidatos <CrearCandidatoModal idOferta={idOferta} idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} /></h2>
+        <div className="flex gap-2 justify-between  w-auto overflow-x-hidden">
+          <div className="bg-cyan-50 dark:bg-gray-800 rounded-lg border p-2 w-56 mt-5  ml-0">
+            <h2 className="mb-4 font-medium text-gray-800 dark:text-white flex items-center justify-around">Candidatos <CrearCandidatoModal idOferta={idOferta} idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} /></h2>
             {filteredCandidatos.length > 0 ? (
               filteredCandidatos.map((candidato, index) => {
                 const isInStage = programaData[0]?.etapas.some(etapa => candidato.estado_etapas === etapa.etapa);
@@ -186,7 +186,7 @@ function Entrevistas() {
                   <div
                     key={index}
                     onClick={() => toggleCandidateSelection(candidato)}
-                    className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'bg-blue-100' : ''}`}>
+                    className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'border-4 border-primarycolor' : ''}`}>
                     <CandidateStageMover 
                       candidate={candidato}
                       programStages={programaData[0]?.etapas || []}
