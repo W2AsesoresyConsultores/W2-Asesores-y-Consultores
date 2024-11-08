@@ -128,6 +128,8 @@ function Entrevistas() {
   };
 
   const moveSelectedCandidates = async () => {
+    if (selectedCandidatos.size === 0) return; // No hay candidatos seleccionados
+
     const updatedCandidatos = [...candidatos];
     const updatedCandidatosNoAuth = [...candidatosNoAuth];
 
@@ -135,6 +137,7 @@ function Entrevistas() {
       const isNoAuthCandidate = candidatosNoAuth.some(c => c.dni === dni);
       const tableName = isNoAuthCandidate ? 'CandidatosNoAuth' : 'Postulacion';
 
+      // Update the stage based on selected option
       await supabase.from(tableName).update({ estado_etapas: selectedStage }).eq('dni', dni);
 
       const targetArray = isNoAuthCandidate ? updatedCandidatosNoAuth : updatedCandidatos;
@@ -155,30 +158,24 @@ function Entrevistas() {
       <div className="w-full h-full bg-[#fafbff] dark:bg-[#141a21] dark:text-white flex flex-col p-8 font-lato pl-72 pt-28">
         <div className='flex items-center gap-2'>
           <div className='w-96 max-h-20'>
-          <Filter onFilter={handleFilter} />
-        </div>
+            <Filter onFilter={handleFilter} />
+          </div>
           <div className='w-96 max-h-20'>
-          <SelectProceso 
-  idReclutador={idReclutador} 
-  currentOfferId={idOferta} 
-  onSelectProceso={setIdOferta} 
-/>
+            <SelectProceso idReclutador={idReclutador} onSelectProceso={setIdOferta} />
+          </div>
+          <div className="flex space-x-4">
+            <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
+            <DescargarPlantilla />
+          </div>
         </div>
-        <div className="flex space-x-4">
-          <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
-          <DescargarPlantilla />   
-        </div>
-        
-         
-        </div>
-        
+
         <h2 className="text-2xl mt-7 mb-4 font-bold">
           Proceso - {puesto || 'Proceso Desconocido'} - {programaData[0]?.empresa || 'Empresa Desconocida'}
         </h2>
 
-        <div className="flex gap-2 justify-between  w-auto overflow-x-hidden">
-          <div className="bg-cyan-50 dark:bg-gray-800 rounded-lg border p-2 w-56 mt-5  ml-0">
-            <h2 className="mb-4 font-medium text-gray-800 dark:text-white flex items-center justify-around">Candidatos <CrearCandidatoModal idOferta={idOferta} idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} /></h2>
+        <div className="flex gap-2 justify-between w-auto overflow-x-scroll">
+          <div className="bg-cyan-50 rounded-lg border p-2 w-56 mt-5 ml-0">
+            <h2 className="mb-4 font-medium text-gray-800 flex items-center justify-around">Candidatos <CrearCandidatoModal idOferta={idOferta} idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} /></h2>
             {filteredCandidatos.length > 0 ? (
               filteredCandidatos.map((candidato, index) => {
                 const isInStage = programaData[0]?.etapas.some(etapa => candidato.estado_etapas === etapa.etapa);
@@ -186,7 +183,7 @@ function Entrevistas() {
                   <div
                     key={index}
                     onClick={() => toggleCandidateSelection(candidato)}
-                    className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'border-4 border-primarycolor' : ''}`}>
+                    className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'bg-blue-100' : ''}`}>
                     <CandidateStageMover 
                       candidate={candidato}
                       programStages={programaData[0]?.etapas || []}
@@ -207,6 +204,7 @@ function Entrevistas() {
                 onChange={(e) => setSelectedStage(e.target.value)} 
                 className="border rounded p-2">
                 <option value="">Seleccionar etapa</option>
+                <option value="Ninguno">Ninguno</option> {/* Add this line */}
                 {programaData[0]?.etapas?.map((etapa, idx) => (
                   <option key={idx} value={etapa.etapa}>{etapa.etapa}</option>
                 ))}
@@ -228,15 +226,19 @@ function Entrevistas() {
                   <h2 className="mb-4 font-medium text-gray-800">{etapa.etapa}</h2>
                   <div className="space-y-2">
                     {filteredCandidatos.filter(candidato => candidato.estado_etapas === etapa.etapa).map((candidato, idx) => (
-                      <CandidateStageMover 
+                      <div
                         key={idx}
-                        candidate={candidato}
-                        programStages={programaData[0]?.etapas || []}
-                        idOferta={idOferta}
-                        setCandidatos={setCandidatos}
-                        setFilteredCandidatos={setFilteredCandidatos}
-                        setCandidatosNoAuth={setCandidatosNoAuth}
-                      />
+                        onClick={() => toggleCandidateSelection(candidato)}
+                        className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'bg-blue-100' : ''}`}>
+                        <CandidateStageMover 
+                          candidate={candidato}
+                          programStages={programaData[0]?.etapas || []}
+                          idOferta={idOferta}
+                          setCandidatos={setCandidatos}
+                          setFilteredCandidatos={setFilteredCandidatos}
+                          setCandidatosNoAuth={setCandidatosNoAuth}
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>

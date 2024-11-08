@@ -51,16 +51,7 @@ const CandidateStageMover = ({ candidate, programStages, idOferta, setCandidatos
       <p className="text-sm text-gray-500">Celular: {candidate.telefono}</p>
       <p className="text-sm text-gray-500">Fecha: {formatDate(candidate.fecha_postulacion || candidate.fecha)}</p>
 
-      <select
-        className="mt-2 bg-blue-500 text-white rounded py-1"
-        onChange={(e) => moveCandidateToStage(e.target.value)}
-      >
-        <option value="">Mover a...</option>
-        <option value="Ninguna">Ninguna</option>
-        {programStages.map((etapa, idx) => (
-          <option key={idx} value={etapa.etapa}>{etapa.etapa}</option>
-        ))}
-      </select>
+
     </div>
   );
 };
