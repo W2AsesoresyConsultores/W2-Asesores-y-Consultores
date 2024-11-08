@@ -48,7 +48,6 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Crear URL de WhatsApp
     const wtspUrl = `https://wa.me/${recruiterNumber}?text=Hola,%20estoy%20interesado%20en%20el%20puesto%20de%20${encodeURIComponent(data.puesto)}`;
     const newData = {
       ...data,
@@ -61,11 +60,10 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
       preg_6: questions[5] || "",
     };
 
-    // Crear la oferta y obtener su ID
     const { data: ofertaData, error: ofertaError } = await supabase
       .from("Oferta")
       .insert([{ ...data, wtsp_url: wtspUrl }])
-      .select(); // Obtén la oferta creada
+      .select();
 
     if (ofertaError) {
       console.error("Error al crear la oferta:", ofertaError);
@@ -74,7 +72,6 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
 
     const ofertaId = ofertaData[0].id_oferta;
 
-    // Subir la imagen de la empresa al bucket
     if (companyImage) {
       const { data: imageData, error: imageError } = await supabase.storage
         .from("empresa_img")
@@ -85,12 +82,10 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
         return;
       }
 
-      // Obtener la URL pública de la imagen
       const { data: publicUrlData } = supabase.storage
         .from("empresa_img")
         .getPublicUrl(`${ofertaId}/${companyImage.name}`);
 
-      // Actualizar la columna empresa_img_url con el URL de la imagen
       const { error: updateError } = await supabase
         .from("Oferta")
         .update({ empresa_img_url: publicUrlData.publicUrl })
@@ -106,7 +101,7 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
     setModalOpen(true);
     onSubmit(ofertaData[0]);
   };
-  
+
   return (
     <Box
       fullWidth
@@ -123,7 +118,7 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
     >
       {/* Modalidad */}
       <Box mb={3}>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" gutterBottom sx={{ color: 'text.primary' }}>
           Modalidad
         </Typography>
         <Select
@@ -132,6 +127,19 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
           onChange={handleChange}
           fullWidth
           required
+          sx={{
+            bgcolor: 'background.default',
+            color: 'text.primary',
+            '& .MuiSelect-icon': {
+              color: 'text.primary',
+            },
+            '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'text.primary',
+            },
+            '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'text.primary',
+            }
+          }}
         >
           <MenuItem value="">Selecciona una modalidad</MenuItem>
           <MenuItem value="Presencial">Presencial</MenuItem>
@@ -150,6 +158,7 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
         fullWidth
         required
         margin="normal"
+        sx={{ bgcolor: 'background.default', color: 'text.primary' }}
       />
 
       {/* Número de Reclutador */}
@@ -162,11 +171,12 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
         fullWidth
         required
         margin="normal"
+        sx={{ bgcolor: 'background.default', color: 'text.primary' }}
       />
 
       {/* Imagen de la empresa */}
       <Box mb={3}>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" gutterBottom sx={{ color: 'text.primary' }}>
           Imagen de la empresa
         </Typography>
         <label htmlFor="upload-image">
@@ -190,7 +200,7 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
 
       {/* Preguntas para el Postulante */}
       <Box mb={3}>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" gutterBottom sx={{ color: 'text.primary' }}>
           Preguntas para el Postulante
         </Typography>
         {questions.map((question, index) => (
@@ -203,6 +213,7 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
               required={index === 0}
               variant="outlined"
               margin="normal"
+              sx={{ bgcolor: 'background.default', color: 'text.primary' }}
             />
             {index === questions.length - 1 && questions.length < 6 && (
               <IconButton color="primary" onClick={addQuestion}>

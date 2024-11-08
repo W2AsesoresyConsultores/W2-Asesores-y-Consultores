@@ -41,17 +41,21 @@ const CandidateStageMover = ({ candidate, programStages, idOferta, setCandidatos
   };
 
   return (
-    <div className="bg-white rounded-lg border p-6 mb-2">
-      <h3 className="text-lg font-medium">{candidate.name_user || candidate.nombre}</h3>
+    <div className="bg-white rounded-lg border mb-2 font-dmsans">
+      <div className='flex gap-2 p-2 items-center'>
+        <img className='w-8 h-8 rounded-full' src="https://cdn-icons-png.flaticon.com/256/6596/6596121.png" alt="" />
+       <h3 className="text-sm font-medium">{candidate.name_user || candidate.nombre}</h3> 
+      </div>
+      
       <p className="text-sm text-gray-500">DNI: {candidate.dni}</p>
-      <p className="text-sm text-gray-500 mt-1">Celular: {candidate.telefono}</p>
+      <p className="text-sm text-gray-500">Celular: {candidate.telefono}</p>
       <p className="text-sm text-gray-500">Fecha: {formatDate(candidate.fecha_postulacion || candidate.fecha)}</p>
 
       <select
-        className="mt-2 bg-blue-500 text-white rounded px-2 py-1"
+        className="mt-2 bg-blue-500 text-white rounded py-1"
         onChange={(e) => moveCandidateToStage(e.target.value)}
       >
-        <option value="">Selecciona una etapa</option>
+        <option value="">Mover a...</option>
         <option value="Ninguna">Ninguna</option>
         {programStages.map((etapa, idx) => (
           <option key={idx} value={etapa.etapa}>{etapa.etapa}</option>
