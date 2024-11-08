@@ -130,7 +130,7 @@ const JobList = () => {
                     <FaUserFriends />
                     <p className="">{job.count_postulados} candidatos</p>
                   </div>
-                  <hr className="mb-2 border-t-2 border-gray-300 border-dotted" />
+                  <hr className="mb-2 border-t-2 border-gray-300 dark:border-gray-800 border-dotted" />
 
                   <div className="text-gray-500 grid grid-cols-3 gap-4 mb-4 text-xs font-light">
                     <div className="flex items-center gap-2">

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabase/supabase.config';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 function SelectProceso({ idReclutador, onSelectProceso }) {
   const [procesos, setProcesos] = useState([]);
+  const [selectedProceso, setSelectedProceso] = useState('');
 
   useEffect(() => {
     const fetchProcesos = async () => {
@@ -23,26 +25,27 @@ function SelectProceso({ idReclutador, onSelectProceso }) {
     }
   }, [idReclutador]);
 
-  const handleSelect = (idOferta) => {
+  const handleSelect = (event) => {
+    const idOferta = event.target.value;
+    setSelectedProceso(idOferta);
     onSelectProceso(idOferta);
   };
 
   return (
-    <div className="mb-4 mt-6">
-      <h3 className="font-bold text-lg text-gray-700">Procesos del Reclutador</h3>
-      <select
-        onChange={(e) => handleSelect(e.target.value)}
-        className="border rounded p-2 mt-2 w-full"
-        defaultValue=""
+    <FormControl fullWidth variant="outlined">
+      <InputLabel>Cambiar de Proceso</InputLabel>
+      <Select
+        value={selectedProceso}
+        onChange={handleSelect}
+        label="Selecciona un Proceso"
       >
-        <option value="" disabled>Selecciona un Proceso</option>
         {procesos.map((proceso) => (
-          <option key={proceso.id_programa} value={proceso.id_oferta}>
+          <MenuItem key={proceso.id_programa} value={proceso.id_oferta}>
             {proceso.proceso}
-          </option>
+          </MenuItem>
         ))}
-      </select>
-    </div>
+      </Select>
+    </FormControl>
   );
 }
 

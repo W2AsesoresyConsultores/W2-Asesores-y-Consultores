@@ -6,6 +6,7 @@ import HeaderAdmin from '../Admin/HeaderAdmin';
 import MenuAdmin from '../Admin/MenuAdmin';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 function Proceso() {
   const [user, setUser] = useState(null);
@@ -116,23 +117,29 @@ function Proceso() {
     <div className="w-full h-screen flex">
       <HeaderAdmin />
       <MenuAdmin />
-      <div className="w-full h-full bg-white flex flex-col p-8 font-dmsans overflow-y-scroll pl-72 pt-28">
+      <div className="w-full h-full bg-[#fafbff] dark:bg-[#141a21] dark:text-white  flex flex-col p-8 font-dmsans overflow-y-scroll pl-72 pt-28">
         <h1 className="text-2xl font-bold mb-6">Crear Proceso de Entrevista</h1>
 
         {/* Selección de la oferta */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold mb-3">Selecciona una Oferta</h2>
-          <select
-            onChange={handleOfertaSelect}
-            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-          >
-            <option value="">Seleccionar una oferta</option>
-            {filteredOfertas.map((oferta) => (
-              <option key={oferta.id_oferta} value={oferta.id_oferta}>
-                {oferta.puesto} - {oferta.empresa}
-              </option>
-            ))}
-          </select>
+          <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
+      <InputLabel>Seleccionar una oferta</InputLabel>
+      <Select
+        label="Seleccionar una oferta"
+        onChange={handleOfertaSelect}
+        defaultValue=""
+      >
+        <MenuItem value="">
+          <em>Seleccionar una oferta</em>
+        </MenuItem>
+        {filteredOfertas.map((oferta) => (
+          <MenuItem key={oferta.id_oferta} value={oferta.id_oferta}>
+            {oferta.puesto} - {oferta.empresa}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
         </div>
 
         {selectedOferta && (

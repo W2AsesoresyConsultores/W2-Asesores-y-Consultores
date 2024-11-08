@@ -149,24 +149,32 @@ function Entrevistas() {
   };
 
   return (
-    <div className="w-full h-screen flex">
+    <div className="w-full min-h-screen flex">
       <HeaderAdmin />
       <MenuAdmin />
-      <div className="w-full h-full bg-[#fafbff] flex flex-col p-8 font-dmsans pl-72 pt-28">
+      <div className="w-full h-full bg-[#fafbff] dark:bg-[#141a21] dark:text-white flex flex-col p-8 font-lato pl-72 pt-28">
+        <div className='flex items-center gap-2'>
+          <div className='w-96 max-h-20'>
+          <Filter onFilter={handleFilter} />
+        </div>
+          <div className='w-96 max-h-20'>
+          <SelectProceso idReclutador={idReclutador} onSelectProceso={setIdOferta} />
+        </div>
         <div className="flex space-x-4">
           <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
-          <DescargarPlantilla />
+          <DescargarPlantilla />   
         </div>
-        <SelectProceso idReclutador={idReclutador} onSelectProceso={setIdOferta} />
-        <Filter onFilter={handleFilter} />
+        
+         
+        </div>
+        
         <h2 className="text-2xl mt-7 mb-4 font-bold">
           Proceso - {puesto || 'Proceso Desconocido'} - {programaData[0]?.empresa || 'Empresa Desconocida'}
         </h2>
-        <CrearCandidatoModal idOferta={idOferta} idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} />
 
-        <div className="flex space-x-4">
-          <div className="bg-white rounded-lg border p-8 mt-5 max-w-sm ml-0">
-            <h2 className="mb-4 font-medium text-gray-600">Candidatos</h2>
+        <div className="flex gap-2 justify-between  w-auto overflow-x-scroll">
+          <div className="bg-cyan-50 rounded-lg border p-2 w-56 mt-5  ml-0">
+            <h2 className="mb-4 font-medium text-gray-800 flex items-center justify-around">Candidatos <CrearCandidatoModal idOferta={idOferta} idReclutador={idReclutador} setCandidatosNoAuth={setCandidatosNoAuth} /></h2>
             {filteredCandidatos.length > 0 ? (
               filteredCandidatos.map((candidato, index) => {
                 const isInStage = programaData[0]?.etapas.some(etapa => candidato.estado_etapas === etapa.etapa);
@@ -174,7 +182,7 @@ function Entrevistas() {
                   <div
                     key={index}
                     onClick={() => toggleCandidateSelection(candidato)}
-                    className={`cursor-pointer p-2 rounded ${selectedCandidatos.has(candidato.dni) ? 'bg-blue-100' : ''}`}>
+                    className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'bg-blue-100' : ''}`}>
                     <CandidateStageMover 
                       candidate={candidato}
                       programStages={programaData[0]?.etapas || []}
@@ -210,11 +218,11 @@ function Entrevistas() {
           </div>
 
           {programaData.length > 0 && (
-            <div className="flex space-x-4 flex-grow">
+            <div className="flex gap-4 justify-around">
               {programaData[0].etapas?.map((etapa, index) => (
-                <div key={index} className="bg-gray-200 rounded-lg shadow-md p-8 mt-5 flex-grow">
-                  <h2 className="mb-4 font-medium text-gray-600">{etapa.etapa}</h2>
-                  <div className="space-y-4">
+                <div key={index} className="bg-gray-50 rounded-lg border border-primarycolor/30 p-2 w-56 mt-5 flex-grow">
+                  <h2 className="mb-4 font-medium text-gray-800">{etapa.etapa}</h2>
+                  <div className="space-y-2">
                     {filteredCandidatos.filter(candidato => candidato.estado_etapas === etapa.etapa).map((candidato, idx) => (
                       <CandidateStageMover 
                         key={idx}

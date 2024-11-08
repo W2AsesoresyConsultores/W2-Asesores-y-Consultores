@@ -87,7 +87,7 @@ const FormOferta = () => {
             <HeaderAdmin />
             <MenuAdmin />
             
-            <div className="w-full h-full bg-[#fafbff] flex flex-col font-dmsans overflow-y-scroll pl-72 pt-24">
+            <div className="w-full h-full bg-[#fafbff] dark:bg-[#141a21] dark:text-white] flex flex-col font-dmsans overflow-y-scroll pl-72 pt-24">
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', gap: '7%', fontFamily: 'sans-serif'}}>
                     <Stepper activeStep={step - 1} orientation="vertical" sx={{ mr: 4 }}>
                         <Step>

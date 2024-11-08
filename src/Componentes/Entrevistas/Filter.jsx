@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField } from '@mui/material';
 
 function Filter({ onFilter }) {
   const [query, setQuery] = useState('');
@@ -9,13 +10,17 @@ function Filter({ onFilter }) {
   };
 
   return (
-    <div className="mb-2 mt-4">
-      <input
-        type="text"
+    <div className="">
+      <TextField p={0}
         value={query}
         onChange={handleInputChange}
         placeholder="Buscar candidatos..."
-        className="p-2 border border-gray-300 rounded-lg w-full"
+        variant="outlined"
+        fullWidth
+        margin=""
+        InputProps={{
+          style: { padding: '0px' },
+        }}
       />
     </div>
   );

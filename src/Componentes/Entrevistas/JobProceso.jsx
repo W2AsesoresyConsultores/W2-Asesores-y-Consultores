@@ -150,7 +150,7 @@ const JobProceso = () => {
               );
             })
           ) : (
-            <p className="text-center text-gray-600">No jobs found</p>
+            <p className="text-center text-gray-600">No se encontraron procesos.</p>
           )}
         </div>
       )}

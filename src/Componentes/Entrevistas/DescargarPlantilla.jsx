@@ -12,7 +12,7 @@ function DescargarPlantilla() {
       href="/Plantilla.xlsx"
       download="Plantilla.xlsx"
     >
-      Descargar Plantilla
+      Plantilla
     </Button>
   );
 }
