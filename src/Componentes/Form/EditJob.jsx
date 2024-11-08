@@ -3,7 +3,7 @@ import { supabase } from '../../supabase/supabase.config';
 import { useParams } from 'react-router-dom';
 import Step1 from './Step1';
 import Step2 from './Step2';
-import Step3 from './Step3';
+import EditStep3 from './EditStep3';
 import HeaderAdmin from '../Admin/HeaderAdmin';
 import MenuAdmin from '../Admin/MenuAdmin';
 import { Box, Stepper, Step, StepLabel } from '@mui/material';
@@ -92,7 +92,7 @@ const EditJob = () => {
                     <form onSubmit={(e) => e.preventDefault()}>
                         {step === 1 && <Step1 data={formData} handleChange={handleChange} nextStep={nextStep} />}
                         {step === 2 && <Step2 data={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />}
-                        {step === 3 && <Step3 data={formData} handleChange={handleChange} prevStep={prevStep} onSubmit={handleSubmit} />}
+                        {step === 3 && <EditStep3 data={formData} handleChange={handleChange} prevStep={prevStep} onSubmit={handleSubmit} />}
                     </form>
                 </Box>
             </div>
