@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { IoMdAdd } from 'react-icons/io';
 import { MdDeleteForever } from 'react-icons/md';
-import { Box, TextField, Button, Input, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, TextField, Button, Input, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { supabase } from '../../supabase/supabase.config';
+import { useNavigate } from 'react-router-dom';
 
 const EditStep3 = ({ data, handleChange, prevStep, onSubmit }) => {
+  const navigate = useNavigate();
   const [recruiterNumber, setRecruiterNumber] = useState(data.id_reclutador || "");
   const [questions, setQuestions] = useState([
     data.preg_1 || "",
@@ -14,10 +16,12 @@ const EditStep3 = ({ data, handleChange, prevStep, onSubmit }) => {
     data.preg_4 || "",
     data.preg_5 || "",
     data.preg_6 || ""
-  ]);
+  ].filter(q => q));
   const [companyImage, setCompanyImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(data.empresa_img_url || null);
   const [openModal, setOpenModal] = useState(false);  // Estado para el modal
+  const [modalidad, setModalidad] = useState(data.modalidad || "");
+  const [horario, setHorario] = useState(data.horario || "");
 
   useEffect(() => {
     if (data.empresa_img_url) {
@@ -54,6 +58,8 @@ const EditStep3 = ({ data, handleChange, prevStep, onSubmit }) => {
     const updatedData = {
       ...data,
       id_reclutador: recruiterNumber,
+      modalidad,
+      horario,
       preg_1: questions[0] || "",
       preg_2: questions[1] || "",
       preg_3: questions[2] || "",
@@ -107,21 +113,41 @@ const EditStep3 = ({ data, handleChange, prevStep, onSubmit }) => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
-    window.location.href = 'http://localhost:5173/Admin'; // Redirigir al inicio
+    navigate('/Admin');
   };
 
   return (
     <Box fullWidth sx={{ maxWidth: 600, minWidth: 600, mx: "auto", mt: 0, p: 3, bgcolor: "background.paper", borderRadius: 2, boxShadow: 1 }}>
+      {/* Modalidad */}
+      <Box mb={3}>
+        <Typography variant="body1" gutterBottom>Modalidad</Typography>
+        <Select
+          name="modalidad"
+          value={modalidad}
+          onChange={e => setModalidad(e.target.value)}
+          fullWidth
+          required
+        >
+          <MenuItem value="">Selecciona una modalidad</MenuItem>
+          <MenuItem value="Presencial">Presencial</MenuItem>
+          <MenuItem value="Remoto">Remoto</MenuItem>
+          <MenuItem value="Híbrido">Híbrido</MenuItem>
+        </Select>
+      </Box>
+
+      {/* Horario */}
       <TextField
-        label="Número de Reclutador"
+        label="Horario"
         variant="outlined"
-        name="recruiterNumber"
-        value={recruiterNumber}
-        onChange={handleRecruiterNumberChange}
+        name="horario"
+        value={horario}
+        onChange={e => setHorario(e.target.value)}
         fullWidth
         required
         margin="normal"
       />
+      
+      {/* Imagen de la empresa */}
       <Box mb={3}>
         <Typography variant="body1" gutterBottom>Imagen de la empresa</Typography>
         {imageUrl && <img src={imageUrl} alt="Imagen de la empresa" width="100%" />}
@@ -143,6 +169,8 @@ const EditStep3 = ({ data, handleChange, prevStep, onSubmit }) => {
           </IconButton>
         </label>
       </Box>
+
+      {/* Preguntas para el Postulante */}
       <Box mb={3}>
         <Typography variant="body1" gutterBottom>Preguntas para el Postulante</Typography>
         {questions.map((question, index) => (
@@ -169,9 +197,16 @@ const EditStep3 = ({ data, handleChange, prevStep, onSubmit }) => {
           </Box>
         ))}
       </Box>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        Actualizar
-      </Button>
+      
+      {/* Botones de navegación */}
+      <Box display="flex" justifyContent="space-between" mt={3}>
+        <Button variant="contained" color="secondary" onClick={prevStep}>
+          Anterior
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
+          Actualizar
+        </Button>
+      </Box>
 
       {/* Modal de éxito */}
       <Dialog open={openModal} onClose={handleCloseModal}>
