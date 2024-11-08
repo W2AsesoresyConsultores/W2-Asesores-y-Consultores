@@ -1,10 +1,9 @@
 import React from 'react';
-import { TextField, Button, Typography, Box } from '@mui/material';
+import { TextField, Button, Box, InputAdornment } from '@mui/material';
 
 const Step1 = ({ data, handleChange, nextStep }) => {
     return (
         <Box sx={{ maxWidth: 600, mx: 'auto', mt: 0, p: 3, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-            
             <TextField
                 label="Puesto"
                 variant="outlined"
@@ -26,7 +25,6 @@ const Step1 = ({ data, handleChange, nextStep }) => {
                 multiline
                 rows={4}
                 margin="normal"
-                
             />
             <TextField
                 label="Lugar"
@@ -47,6 +45,9 @@ const Step1 = ({ data, handleChange, nextStep }) => {
                 fullWidth
                 required
                 margin="normal"
+                InputProps={{
+                    startAdornment: <InputAdornment position="start">W2 -</InputAdornment>,
+                }}
             />
             <TextField
                 label="Sueldo"

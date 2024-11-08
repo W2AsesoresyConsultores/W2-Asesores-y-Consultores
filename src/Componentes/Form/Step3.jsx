@@ -16,13 +16,10 @@ import {
 import { supabase } from '../../supabase/supabase.config';
 
 const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
-  const [recruiterNumber, setRecruiterNumber] = useState("");
   const [questions, setQuestions] = useState([""]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [updatedData, setUpdatedData] = useState(null);
   const [companyImage, setCompanyImage] = useState(null);
-
-  const handleRecruiterNumberChange = (e) => setRecruiterNumber(e.target.value);
 
   const handleQuestionChange = (index, e) => {
     const newQuestions = [...questions];
@@ -48,10 +45,8 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const wtspUrl = `https://wa.me/${recruiterNumber}?text=Hola,%20estoy%20interesado%20en%20el%20puesto%20de%20${encodeURIComponent(data.puesto)}`;
     const newData = {
       ...data,
-      wtsp_url: wtspUrl,
       preg_1: questions[0] || "",
       preg_2: questions[1] || "",
       preg_3: questions[2] || "",
@@ -62,7 +57,7 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
 
     const { data: ofertaData, error: ofertaError } = await supabase
       .from("Oferta")
-      .insert([{ ...data, wtsp_url: wtspUrl }])
+      .insert([newData])
       .select();
 
     if (ofertaError) {
@@ -155,19 +150,6 @@ const Step3 = ({ data, handleChange, prevStep, onSubmit }) => {
         name="horario"
         value={data.horario}
         onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        sx={{ bgcolor: 'background.default', color: 'text.primary' }}
-      />
-
-      {/* Número de Reclutador */}
-      <TextField
-        label="Número de Reclutador"
-        variant="outlined"
-        name="recruiterNumber"
-        value={recruiterNumber}
-        onChange={handleRecruiterNumberChange}
         fullWidth
         required
         margin="normal"
