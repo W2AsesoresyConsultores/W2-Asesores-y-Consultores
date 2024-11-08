@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabase/supabase.config';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
-function SelectProceso({ idReclutador, onSelectProceso }) {
+function SelectProceso({ idReclutador, currentOfferId, onSelectProceso }) {
   const [procesos, setProcesos] = useState([]);
   const [selectedProceso, setSelectedProceso] = useState('');
 
@@ -31,6 +31,10 @@ function SelectProceso({ idReclutador, onSelectProceso }) {
     onSelectProceso(idOferta);
   };
 
+  const filteredProcesos = procesos.filter(
+    (proceso) => proceso.id_oferta !== currentOfferId
+  );
+
   return (
     <FormControl fullWidth variant="outlined">
       <InputLabel>Cambiar de Proceso</InputLabel>
@@ -39,7 +43,7 @@ function SelectProceso({ idReclutador, onSelectProceso }) {
         onChange={handleSelect}
         label="Selecciona un Proceso"
       >
-        {procesos.map((proceso) => (
+        {filteredProcesos.map((proceso) => (
           <MenuItem key={proceso.id_programa} value={proceso.id_oferta}>
             {proceso.proceso}
           </MenuItem>

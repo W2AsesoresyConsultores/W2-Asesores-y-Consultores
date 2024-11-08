@@ -158,7 +158,11 @@ function Entrevistas() {
           <Filter onFilter={handleFilter} />
         </div>
           <div className='w-96 max-h-20'>
-          <SelectProceso idReclutador={idReclutador} onSelectProceso={setIdOferta} />
+          <SelectProceso 
+  idReclutador={idReclutador} 
+  currentOfferId={idOferta} 
+  onSelectProceso={setIdOferta} 
+/>
         </div>
         <div className="flex space-x-4">
           <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />
