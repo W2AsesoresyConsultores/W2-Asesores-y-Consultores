@@ -81,17 +81,19 @@ function Proceso() {
     const oferta = ofertas.find((oferta) => oferta.id_oferta === parseInt(selectedId));
     setSelectedOferta(oferta || null);
   };
-
   const handleSubmit = async () => {
     if (!selectedOferta) return;
-
+  
+      // Obtener la fecha actual en la zona horaria de Perú (UTC-5)
+      const fechaPostulacion = new Date().toLocaleString("en-US", { timeZone: "America/Lima" });
+  
     const data = {
       id_reclutador: user.id,
       id_oferta: selectedOferta.id_oferta,
       proceso: selectedOferta.puesto,
       empresa: selectedOferta.empresa,
       lugar: selectedOferta.ubicacion,
-      fecha_public: new Date().toISOString(),
+      fecha_public: fechaPostulacion, // Convierte la fecha a formato ISO para insertarla en la base de datos
       etapas: stages.map(stage => ({
         etapa: stage.etapa,
         recomendacion: stage.recomendacion,
@@ -100,9 +102,9 @@ function Proceso() {
         mapsURL: stage.mapsURL,
       })),
     };
-
+  
     const { error } = await supabase.from('Programa').insert([data]);
-
+  
     if (error) {
       console.error('Error saving process:', error);
     } else {
