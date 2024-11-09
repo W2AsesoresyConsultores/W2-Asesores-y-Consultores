@@ -14,10 +14,10 @@ function CargarExcel({ idReclutador, idOferta, setCandidatosNoAuth }) {
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file || !idReclutador || !idOferta) return;
-  
+
     setLoading(true);
     setSuccess(false);
-  
+
     const reader = new FileReader();
     reader.onload = async (e) => {
       const data = new Uint8Array(e.target.result);
@@ -25,10 +25,11 @@ function CargarExcel({ idReclutador, idOferta, setCandidatosNoAuth }) {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
-  
+
+      // Obtener la fecha actual en la zona horaria de Perú (UTC-5)
       const today = new Date();
-      const formattedDate = today.toLocaleDateString('en-CA'); // YYYY-MM-DD
-  
+      const formattedDate = today.toLocaleString("en-US", { timeZone: "America/Lima" });
+
       const candidatosData = jsonData.map((row) => ({
         id_user: uuidv4(),
         id_reclutador: idReclutador,
@@ -38,22 +39,22 @@ function CargarExcel({ idReclutador, idOferta, setCandidatosNoAuth }) {
         telefono: row.Celular,
         estado_etapas: [],
         estado: 'apto',
-        fecha: formattedDate,
+        fecha: formattedDate, // Guardar la fecha con hora ajustada a Perú
       }));
-  
+
       const { error } = await supabase.from('CandidatosNoAuth').insert(candidatosData);
-  
+
       setLoading(false);
-  
+
       if (error) {
         console.error('Error al subir candidatos:', error);
         return;
       }
-  
+
       setSuccess(true);
       setCandidatosNoAuth((prev) => [...prev, ...candidatosData]);
     };
-  
+
     reader.readAsArrayBuffer(file);
   };
 
