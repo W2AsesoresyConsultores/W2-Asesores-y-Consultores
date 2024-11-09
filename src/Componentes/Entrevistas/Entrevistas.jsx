@@ -126,12 +126,22 @@ function Entrevistas() {
 
   const handleDateFilter = (date) => {
     setSelectedDate(date);
+    
     const filtered = [...candidatos, ...candidatosNoAuth].filter(candidato => {
-      const fecha = new Date(candidato.fecha_postulacion || candidato.fecha);
-      return date ? fecha.toISOString().split('T')[0] === date : true;
+        const fecha = new Date(candidato.fecha_postulacion || candidato.fecha);
+        
+        // Obtener la fecha en la zona horaria deseada (America/Lima)
+        const fechaLocal = fecha.toLocaleString("en-US", { timeZone: "America/Lima" }).split(',')[0];
+        
+        // Formatear la fecha local a YYYY-MM-DD
+        const [mes, dia, anio] = fechaLocal.split('/');
+        const formattedDate = `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`; // YYYY-MM-DD
+
+        return date ? formattedDate === date : true;
     });
+
     setFilteredCandidatos(filtered);
-  };
+};
 
   const toggleCandidateSelection = (candidato) => {
     const newSelection = new Set(selectedCandidatos);
