@@ -183,7 +183,7 @@ function Entrevistas() {
                   <div
                     key={index}
                     onClick={() => toggleCandidateSelection(candidato)}
-                    className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'bg-blue-100' : ''}`}>
+                    className={`cursor-pointer rounded ${selectedCandidatos.has(candidato.dni) ? 'border-2 border-primarycolor' : ''}`}>
                     <CandidateStageMover 
                       candidate={candidato}
                       programStages={programaData[0]?.etapas || []}
