@@ -69,14 +69,14 @@ function Navbar() {
             >
               Coworking
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to="/Power"
               className={({ isActive }) =>
                 isActive ? activeStyle : classDefault
               }
             >
               Power
-            </NavLink>
+            </NavLink> */}
           </div>
           <button
             onClick={openModal}
@@ -135,12 +135,12 @@ function Navbar() {
             >
               Coworking
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to="/Power"
               className="text-gray-800 hover:text-gray-600 block px-3 py-2 rounded-md text-base font-medium"
             >
               Power
-            </NavLink>
+            </NavLink> */}
 
             <button
               onClick={openModal}
