@@ -10,6 +10,7 @@ import CrearCandidatoModal from './CrearCandidatoModal';
 import DescargarPlantilla from './DescargarPlantilla';
 import CandidateStageMover from './CandidateStageMover';
 import SelectProceso from './SelectProceso';
+import DateFilter from './DateFilter';
 
 function Entrevistas() {
   const { user } = UserAuth();
@@ -23,6 +24,8 @@ function Entrevistas() {
   const [filteredCandidatos, setFilteredCandidatos] = useState([]);
   const [selectedCandidatos, setSelectedCandidatos] = useState(new Set());
   const [selectedStage, setSelectedStage] = useState('');
+
+  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,6 +124,25 @@ function Entrevistas() {
     setFilteredCandidatos(filtered);
   };
 
+  const handleDateFilter = (date) => {
+    setSelectedDate(date);
+    
+    const filtered = [...candidatos, ...candidatosNoAuth].filter(candidato => {
+        const fecha = new Date(candidato.fecha_postulacion || candidato.fecha);
+        
+        // Obtener la fecha en la zona horaria deseada (America/Lima)
+        const fechaLocal = fecha.toLocaleString("en-US", { timeZone: "America/Lima" }).split(',')[0];
+        
+        // Formatear la fecha local a YYYY-MM-DD
+        const [mes, dia, anio] = fechaLocal.split('/');
+        const formattedDate = `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`; // YYYY-MM-DD
+
+        return date ? formattedDate === date : true;
+    });
+
+    setFilteredCandidatos(filtered);
+};
+
   const toggleCandidateSelection = (candidato) => {
     const newSelection = new Set(selectedCandidatos);
     newSelection.has(candidato.dni) ? newSelection.delete(candidato.dni) : newSelection.add(candidato.dni);
@@ -162,6 +184,9 @@ function Entrevistas() {
           </div>
           <div className='w-96 max-h-20'>
             <SelectProceso idReclutador={idReclutador} onSelectProceso={setIdOferta} />
+          </div>
+          <div className='w-96 max-h-20'>
+            <DateFilter onDateFilter={handleDateFilter} />
           </div>
           <div className="flex space-x-4">
             <CargarExcel idReclutador={idReclutador} idOferta={idOferta} setCandidatosNoAuth={setCandidatosNoAuth} />

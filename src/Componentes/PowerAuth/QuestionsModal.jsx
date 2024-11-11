@@ -52,14 +52,14 @@ function QuestionsModal({ isOpen, onClose, selectedJob }) {
 
   const handleSubmit = async () => {
     try {
-      // Verify that selectedJob is valid
+      // Verificar que selectedJob es válido
       if (!selectedJob || !selectedJob.id_oferta) {
         console.error('Oferta no válida:', selectedJob);
         alert('Oferta no válida.');
         return;
       }
   
-      // Fetch user profile data
+      // Obtener datos del perfil del usuario
       const { data: profileData, error: profileError } = await supabase
         .from('perfiles')
         .select('nombre, correo, avatar_url, telefono, dni')
@@ -74,7 +74,10 @@ function QuestionsModal({ isOpen, onClose, selectedJob }) {
   
       const { nombre, correo, avatar_url, telefono, dni } = profileData;
   
-      // Insert application into the Postulacion table
+      // Obtener la fecha actual en la zona horaria de Perú (UTC-5)
+      const fechaPostulacion = new Date().toLocaleString("en-US", { timeZone: "America/Lima" });
+  
+      // Insertar la postulación en la tabla Postulacion
       const { error: insertError } = await supabase
         .from('Postulacion')
         .insert({
@@ -82,13 +85,13 @@ function QuestionsModal({ isOpen, onClose, selectedJob }) {
           user_id: user.id,
           name_user: nombre,
           correo: correo,
-          telefono: telefono, // Use the phone obtained from the profile
+          telefono: telefono, // Usar el teléfono obtenido del perfil
           resp_1: answers[0],
           resp_2: answers[1],
           resp_3: answers[2],
           resp_4: answers[3],
           resp_5: answers[4],
-          fecha_postulacion: new Date(),
+          fecha_postulacion: fechaPostulacion, // Usar la fecha ajustada a Perú
           estado: 'pendiente',
           avatar_url: avatar_url,
           dni: dni,
@@ -100,7 +103,7 @@ function QuestionsModal({ isOpen, onClose, selectedJob }) {
         return;
       }
   
-      // Update the applicant count
+      // Actualizar el conteo de postulados
       const { error: updateError } = await supabase
         .from('Oferta')
         .update({ count_postulados: selectedJob.count_postulados + 1 })
@@ -112,9 +115,9 @@ function QuestionsModal({ isOpen, onClose, selectedJob }) {
         return;
       }
   
-      // If everything went well
+      // Si todo salió bien
       setSubmissionSuccess(true);
-      setAnswers(['', '', '', '', '']); // Clear answers
+      setAnswers(['', '', '', '', '']); // Limpiar respuestas
     } catch (error) {
       console.error('Error al enviar la postulación:', error.message);
       alert(`Error: ${error.message}`);

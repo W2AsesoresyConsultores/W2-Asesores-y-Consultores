@@ -26,8 +26,9 @@ function CargarExcel({ idReclutador, idOferta, setCandidatosNoAuth }) {
       const worksheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
+      // Obtener la fecha actual en la zona horaria de Perú (UTC-5)
       const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0]; // YYYY-MM-DD
+      const formattedDate = today.toLocaleString("en-US", { timeZone: "America/Lima" });
 
       const candidatosData = jsonData.map((row) => ({
         id_user: uuidv4(),
@@ -38,7 +39,7 @@ function CargarExcel({ idReclutador, idOferta, setCandidatosNoAuth }) {
         telefono: row.Celular,
         estado_etapas: [],
         estado: 'apto',
-        fecha: formattedDate,
+        fecha: formattedDate, // Guardar la fecha con hora ajustada a Perú
       }));
 
       const { error } = await supabase.from('CandidatosNoAuth').insert(candidatosData);
