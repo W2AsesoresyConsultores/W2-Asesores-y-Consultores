@@ -1,5 +1,4 @@
 import React from "react";
-import logowhite from '../../assets/Logo horizontal W2 WHITE.png';
 import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
@@ -12,7 +11,9 @@ const Footer = () => {
                 <img src="" alt="" />
               </div>
               <div className="flex flex-col items-center">
-                <img className="w-44" src={logowhite} alt="Logo" />
+                <img className="w-44" 
+                src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/Logo%20horizontal%20W2%20WHITE.png" 
+                alt="Logo" />
                 <p className="text-sm text-gray-300 ">Tu aliado en Employer Branding | Inbound Recruiting</p>
               </div>
             </a>

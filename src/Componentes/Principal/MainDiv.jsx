@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HiArrowRight } from "react-icons/hi";
-import fondo from '../../assets/gradiantFondo.png';
 import Hero from './Hero';
-import arrow from '../../assets/flechanegra.png';
 
 function MainDiv() {
   return (

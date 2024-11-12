@@ -7,7 +7,6 @@ import Charla from '../../assets/coworking/Charla.jpg'
 import Equipo from '../../assets/coworking/equipo.jpg'
 import Eventos from '../../assets/coworking/eventos.jpg'
 import Individual from '../../assets/coworking/individual.jpg'
-import flecha from "../../assets/flecha.png";
 
 const Rooms = () => {
   const rooms = [
@@ -84,8 +83,8 @@ const Rooms = () => {
       
         <h2 className="text-4xl font-bold text-gray-800">
           <img
-            src={flecha}
-            alt=""
+            src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+            alt="flecha"
             className="inline-block w-16 h-12 mr-2"
           ></img>Beneficios del <span className='text-primarycolor'>Coworking</span> </h2>
         <p className="text-gray-600 mt-2">

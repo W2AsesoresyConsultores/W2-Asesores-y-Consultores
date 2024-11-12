@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import aser from '../../assets/asesora.png'
 import {useTypewriter, Cursor} from 'react-simple-typewriter'
 import Contacto from '../Contacto/Contacto'
 
@@ -41,8 +40,8 @@ function CtaEmpresa() {
           </div>
           <div className="lg:w-1/3 order-first h-full flex items-end">
             <img
-              src= { aser }
-              alt="Tailwind CSS"
+              src= "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/asesora.png"
+              alt="Asesora"
               className="transition duration-200 w-64"
             />
           </div>

@@ -1,14 +1,12 @@
 import React from "react";
-import fondoIlustrado from "../../assets/BG 31.png";
-import imgHero from "../../assets/3d-practicantes.png";
-import talentos from '../../assets/Icono Talentos.png'
-import arrow from "../../assets/flechas-a-la-derecha.png";
 import Descubre from "./Descubre";
 function HeroPracticantes() {
   return (
     <section className="pt-28 flex flex-wrap font-dmsans md:px-12">
       <div className="flex flex-wrap justify-center">
-        <img className="hidden md:flex w-20 h-48 mt-[3%]" src={talentos} alt="" />
+        <img className="hidden md:flex w-20 h-48 mt-[3%]" 
+        src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/Icono%20Talentos.png" 
+        alt="" />
       <div className="w-full md:w-1/3 flex flex-col justify-center md:items-start items-center gap-6 px-4 text-center md:text-left">
         
         <h1 className="text-5xl md:text-6xl font-bold text-primarytext ">Descubriendo <span className="text-primarycolor">Talentos</span></h1>
@@ -17,9 +15,10 @@ function HeroPracticantes() {
           Descubre nuestro ecosistema
           </a>
       </div>
-      <div style={{ backgroundImage: `url(${fondoIlustrado})` }}
+      <div style={{ backgroundImage: `url(${"https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/BG%2031.png"})` }}
       className="w-1/2 md:w-1/3 flex justify-center bg-contain mt-12 md:mt-0 items-center mx-auto">
-        <img className="" src={imgHero} alt="" />
+        <img className="" src={"https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/3d-practicantes.png"} 
+        alt="" />
       </div>
       </div>
       

@@ -1,7 +1,4 @@
 import React from "react";
-import flecha from "../../assets/flecha.png";
-import capa from "../../assets/capacitaciones.jpg";
-import donar from "../../assets/donaciones.jpg";
 import { motion } from "framer-motion"
 
 function Testimonio() {
@@ -11,8 +8,8 @@ function Testimonio() {
         <h2 class="text-4xl text-center font-bold mb-8 lg:text-5xl">
           {" "}
           <img
-            src={flecha}
-            alt=""
+            src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+            alt="flecha"
             className="inline-block w-16 h-12 mr-2"
           ></img>
           Cada vez que contratas nuestro servicios <br></br>{" "}
@@ -41,7 +38,8 @@ function Testimonio() {
           <div class="bg-primarycolor w-80 h-96 shadow rounded-lg p-8 text-white text-center flex flex-col justify-around items-center mb-6">
           <motion.div whileHover={{ scale: 1.1 }}
     whileTap={{ scale: 0.9 }}>
-            <img src={capa} alt="" className="w-full h-40 mb-4 rounded-lg" />
+            <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/capacitaciones.jpg"
+            alt="capa" className="w-full h-40 mb-4 rounded-lg" />
             </motion.div>
             <div className="w-full h-48">
               <h3 className="text-xl font-semibold mb-2">Capacitaciones</h3>
@@ -54,7 +52,8 @@ function Testimonio() {
           <div class="bg-[#BD51FF] w-80 h-96 shadow rounded-lg p-8 text-white text-center flex flex-col justify-bettween items-center mb-6">
           <motion.div whileHover={{ scale: 1.1 }}
     whileTap={{ scale: 0.9 }}>
-            <img src={donar} alt="" className="w-full h-40 mb-4 rounded-lg" />
+            <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/donaciones.jpg"
+            alt="dona" className="w-full h-40 mb-4 rounded-lg" />
              </motion.div>
             <div className="w-full h-48">
               <h3 className="text-xl font-semibold mb-2">Donaciones</h3>
