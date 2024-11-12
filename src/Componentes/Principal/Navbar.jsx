@@ -70,14 +70,14 @@ function Navbar() {
             >
               Coworking
             </NavLink>
-            {/* <NavLink
-              to="/Power"
+            { <NavLink
+              to="https://powerw2.com/"
               className={({ isActive }) =>
                 isActive ? activeStyle : classDefault
               }
             >
               Power
-            </NavLink> */}
+            </NavLink> }
           </div>
           <button
             onClick={openModal}

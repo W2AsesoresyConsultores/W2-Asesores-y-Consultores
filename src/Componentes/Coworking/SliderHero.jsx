@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import cw2_1 from '../../assets/coworking/cw2_1.jpg'
+import cw2_1 from 'https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/cw2_1.jpg'
 
 const SliderHero = () => {
   const [selectedImage, setSelectedImage] = useState(cw2_1); // Imagen por defecto

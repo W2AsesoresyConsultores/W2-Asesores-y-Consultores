@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import cw2_1 from '../../assets/coworking/cw2_1.jpg'
-import cw2_2 from '../../assets/coworking/Estrategia.jpeg'
-import cw2_3 from '../../assets/coworking/Colegio.jpeg'
-
-
 
 const HeroCoworking = () => {
   const slides = [
-    { id: 1, content: '', img: cw2_1 },
-    { id: 2, content: '', img: cw2_2 },
-    { id: 3, content: '', img: cw2_3},
+    { id: 1, content: '', img: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/cw2_1.jpg" },
+    { id: 2, content: '', img: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Estrategia.jpeg" },
+    { id: 3, content: '', img: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Colegio.jpeg"},
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
