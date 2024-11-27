@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaLock } from 'react-icons/fa';
 import { PiChairDuotone } from 'react-icons/pi';
-import Colegio from '../../assets/coworking/Colegio.jpeg';
-import Herradura from '../../assets/coworking/Herradura.jpeg';
-import Innovacion from '../../assets/coworking/Innovacion.jpeg';
-import Estrategia from '../../assets/coworking/Estrategia.jpeg';
 
 const SeatSelection = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -110,7 +106,8 @@ const SeatSelection = () => {
               className={`flex items-center cursor-pointer ${selectedSpaceClosed === '27' ? 'bg-blue-100' : ''}`}
               onClick={() => handleSpaceClosedSelect('27')}
             >
-              <img src={Innovacion} alt="Innovación" className="w-32 h-32 object-cover mr-4" />
+              <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Innovacion.jpeg"
+              alt="Innovación" className="w-32 h-32 object-cover mr-4" />
               <div>
                 <h3 className="text-lg font-semibold">Sala de Innovación</h3>
                 <p>Ideal para reuniones pequeñas, equipada con recursos como TV y pizarra.</p>
@@ -120,7 +117,8 @@ const SeatSelection = () => {
               className={`flex items-center cursor-pointer ${selectedSpaceClosed === '28' ? 'bg-blue-100' : ''}`}
               onClick={() => handleSpaceClosedSelect('28')}
             >
-              <img src={Estrategia} alt="Estrategia" className="w-32 h-32 object-cover mr-4" />
+              <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Estrategia.jpeg"
+              alt="Estrategia" className="w-32 h-32 object-cover mr-4" />
               <div>
                 <h3 className="text-lg font-semibold">Sala de Estrategia</h3>
                 <p>Perfecta para sesiones estratégicas y colaborativas. También cuenta con TV, pizarra o ambos.</p>
@@ -152,7 +150,8 @@ const SeatSelection = () => {
               className={`flex items-center cursor-pointer ${selectedTrainingSpace === '29' ? 'bg-blue-100' : ''}`}
               onClick={() => handleTrainingSpaceSelect('29')}
             >
-              <img src={Herradura} alt="Forma de Herradura" className="w-32 h-32 object-cover mr-4" />
+              <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Herradura.jpeg"
+              alt="Forma de Herradura" className="w-32 h-32 object-cover mr-4" />
               <div>
                 <h3 className="text-lg font-semibold">Forma de Herradura</h3>
                 <p>Diseñada para eventos con una disposición en herradura. Cuenta con proyector y si desea añadir un coffee break.</p>
@@ -162,7 +161,8 @@ const SeatSelection = () => {
               className={`flex items-center cursor-pointer ${selectedTrainingSpace === '30' ? 'bg-blue-100' : ''}`}
               onClick={() => handleTrainingSpaceSelect('30')}
             >
-              <img src={Colegio} alt="Forma de Colegio" className="w-32 h-32 object-cover mr-4" />
+              <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Colegio.jpeg"
+              alt="Forma de Colegio" className="w-32 h-32 object-cover mr-4" />
               <div>
                 <h3 className="text-lg font-semibold">Forma de Colegio</h3>
                 <p>Adecuada para capacitaciones con disposición en aula. Se puede incluir un proyector y si desea coffee break.</p>

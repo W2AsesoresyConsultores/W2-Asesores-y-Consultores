@@ -1,19 +1,4 @@
 import React, { useState } from "react";
-import agil from "../../assets/AGIL TALENT.png";
-import eleva from "../../assets/ELEVA TALENT.png";
-import top from "../../assets/TOP TALENT.png";
-import start from "../../assets/STARTUP TALENT.png";
-import reclut from "../../assets/Reclutamiento.png";
-import hunt from "../../assets/head.png";
-import evalu from "../../assets/evaluacion.png";
-import emplo from "../../assets/employer.png";
-import evalua from "../../assets/Evaluaciones.png";
-import feliz from "../../assets/Felicidad.png";
-import sico from "../../assets/Psico.png";
-import flecha from "../../assets/flecha.png";
-import habil from "../../assets/Habilidades.png";
-import taller from "../../assets/Talleres.png";
-import capacitacion from "../../assets/Capacitaciones.png";
 import { motion } from "framer-motion";
 import Contacto from '../Contacto/Contacto'
 
@@ -51,8 +36,8 @@ function Intermedio() {
                 <li class="flex items-start lg:col-span-1 mb-4">
                   <div class="flex items-center">
                     <img
-                      src={agil}
-                      alt="Icono"
+                      src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/AGIL%20TALENT.png"
+                      alt="Icono1"
                       class="w-20 h-20 text-indigo-600"
                     />
                     <p class="ml-3 leading-5 text-black">
@@ -69,8 +54,8 @@ function Intermedio() {
                 <li class="flex items-start mt-5 lg:col-span-1 lg:mt-0">
                   <div class="flex items-center">
                     <img
-                      src={eleva}
-                      alt="Icono"
+                      src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/ELEVA%20TALENT.png"
+                      alt="Icono2"
                       class="w-20 h-20 text-indigo-600"
                     />
                     <p class="ml-3 leading-5 text-black">
@@ -108,8 +93,8 @@ function Intermedio() {
           <div class="lg:inset-y-0 lg:right-0 lg:w-1/2" >
             <img
               class="h-72 w-full object-cover sm:h-72 md:h-64 lg:w-full lg:h-full"
-              src={reclut}
-              alt=""
+              src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Reclutamiento.png"
+              alt="reclutamiento"
             />
           </div>
         </div>
@@ -136,8 +121,8 @@ function Intermedio() {
               <li class="flex items-start lg:col-span-1 ">
                 <div class="flex items-center">
                   <img
-                    src={top}
-                    alt="Icono"
+                    src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/TOP%20TALENT.png"
+                    alt="Icono3"
                     class="w-20 h-20 text-indigo-600"
                   />
                   <p class="ml-3 leading-5 text-black">
@@ -155,7 +140,7 @@ function Intermedio() {
               <li class="flex items-start lg:col-span-1 mb-4">
                 <div class="flex items-center">
                   <img
-                    src={start}
+                    src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/STARTUP%20TALENT.png"
                     alt="Icono"
                     class="w-20 h-20 text-indigo-600"
                   />
@@ -193,8 +178,8 @@ function Intermedio() {
           <div class="lg:inset-y-0 lg:right-0 lg:w-1/2">
             <img
               class="h-60 w-full object-cover sm:h-72 md:h-64 lg:w-full lg:h-full"
-              src={hunt}
-              alt=""
+              src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/head.png"
+              alt="hunt"
             />
           </div>
         </div>
@@ -221,7 +206,8 @@ function Intermedio() {
 
               <li class="flex items-start lg:col-span-1 ">
                 <div class="flex items-center">
-                  <img src={feliz} alt="Icono" class="w-16 h-16" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Evaluaciones.png"
+                  alt="Icono" class="w-16 h-16" />
                   <p class="ml-3 leading-5 text-black font-dmsans">
                     {" "}
                     Evaluaciones de clima y cultura adaptados a la realidad y{" "}
@@ -235,7 +221,8 @@ function Intermedio() {
 
               <li class="flex items-start lg:col-span-1 ">
                 <div class="flex items-center">
-                  <img src={evalua} alt="Icono" class="w-16 h-16" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Evaluaciones.png"
+                  alt="Icono5" class="w-16 h-16" />
                   <p class="ml-3 leading-5 text-black font-dmsans">
                     {" "}
                     Evaluaciones de desempeño que permitan{" "}
@@ -253,7 +240,8 @@ function Intermedio() {
 
               <li class="flex items-start lg:col-span-1 ">
                 <div class="flex items-center">
-                  <img src={sico} alt="Icono" class="w-16 h-16" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Psico.png"
+                  alt="Icono" class="w-16 h-16" />
                   <p class="ml-3 leading-5 text-black font-dmsans">
                     Evaluaciones psicolaborales para
                     <span class="text-indigo-600 xl:inline">
@@ -289,8 +277,8 @@ function Intermedio() {
           <div class="bottom-0 lg:w-1/2 h-full">
             <img
               class="h-84 w-full object-cover sm:h-72 md:h-64 lg:w-full lg:h-[60%]"
-              src={evalu}
-              alt=""
+              src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/evaluacion.png"
+              alt="evalu"
             />
           </div>
         </div>
@@ -315,7 +303,8 @@ function Intermedio() {
               <ul class="mt-4 space-y-3 font-medium">
                 <li class="flex items-start lg:col-span-1 mb-4">
                   <div class="flex items-center">
-                    <img src={habil} alt="Icono" class="w-12 h-12" />
+                    <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Habilidades.png"
+                    alt="Icono" class="w-12 h-12" />
                     <p class="ml-3 leading-5 text-black font-dmsans">
                     Brand Bootcamp | Capacitación Intensiva en Employer Branding
                     </p>
@@ -324,7 +313,8 @@ function Intermedio() {
 
                 <li class="flex items-start mt-5 lg:col-span-1 lg:mt-0">
                   <div class="flex items-center">
-                    <img src={capacitacion} alt="Icono" class="w-12 h-12" />
+                    <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Capacitaciones.png" 
+                    alt="Icono" class="w-12 h-12" />
                     <p class="ml-3 leading-5 text-black font-dmsans">
                     Brand Leadership Academy | Liderazgo Inspirador para una Marca Empleadora Poderosa.
                     </p>
@@ -333,7 +323,8 @@ function Intermedio() {
 
                 <li class="flex items-start mt-5 lg:col-span-1 lg:mt-0">
                   <div class="flex items-center">
-                    <img src={taller} alt="Icono" class="w-12 h-12" />
+                    <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Habilidades.png"
+                    alt="Icono" class="w-12 h-12" />
                     <p class="ml-3 leading-5 text-black font-dmsans">
                     Brand ADN Workshops | Construyendo la Identidad Cultural de una Marca Empleadora de Vanguardia.
                     </p>
@@ -364,8 +355,8 @@ function Intermedio() {
           <div class="lg:inset-y-0 lg:right-0 lg:w-1/2">
             <img
               class="h-full w-full object-cover sm:h-72 md:h-64 lg:w-full lg:h-full"
-              src={emplo}
-              alt=""
+              src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/employer.png"
+              alt="emplo"
             />
           </div>
         </div>
@@ -381,7 +372,8 @@ function Intermedio() {
     <div id="intermedio" className=" flex flex-wrap justify-center w-full items-center">
       <h2 className="text-primarytext font-semibold text-4xl mt-8 md:mt-20 text-center">
         {" "}
-        <img src={flecha} alt="" className="inline-block w-16 h-12 mr-2"></img>
+        <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+        alt="flecha" className="inline-block w-16 h-12 mr-2"></img>
         Brindamos soluciones para todo tipo de reto de <br></br>{" "}
         <span class="block text-primarycolor xl:inline">GESTIÓN HUMANA </span>
       </h2>

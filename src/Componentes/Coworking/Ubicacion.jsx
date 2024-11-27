@@ -1,5 +1,4 @@
 import React from 'react'
-import flecha from "../../assets/flecha.png";
 
 function Ubicacion() {
   return (
@@ -7,8 +6,8 @@ function Ubicacion() {
     <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-20 lg:px-8">
         <div class="max-w-2xl lg:max-w-4xl mx-auto text-center">
             <h2 class="text-4xl font-bold text-gray-800"><img
-            src={flecha}
-            alt=""
+            src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+            alt="flecha"
             className="inline-block w-16 h-12 mr-2"
           ></img>Alquiler de Salas de Reunión en San Juan de Lurigancho: <br></br><span className='text-primarycolor'>El Lugar Perfecto para Tus Encuentros</span></h2>
             <p class="mt-4 text-lg text-gray-600">Necesitas un lugar profesional para tus reuniones? Nuestras salas de reunión en San Juan de Lurigancho están diseñadas para ofrecerte privacidad, tecnología de punta y comodidad.</p>

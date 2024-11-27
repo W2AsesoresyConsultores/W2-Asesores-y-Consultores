@@ -2,14 +2,6 @@ import React, { useRef, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-//Import de imágenes
-import flexibilidad from "../../assets/Flexibilidad (1).gif";
-import aprendizaje from "../../assets/Aprendizaje Continuo.gif";
-import cultura from "../../assets/Cultura (1).gif";
-import desarrollo from "../../assets/Inicio Diferentes.gif";
-import beneficios from "../../assets/Beneficios.gif";
-import flecha from "../../assets/flecha.png";
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -32,7 +24,8 @@ const SliderComponent = () => {
         <img src="https://cdn.devdojo.com/tails/avatars/032.jpg" class="rounded-full w-20 h-20 md:w-24 md:h-24 border-4 border-white relative"/>
       </div>
       <h2 class="text-3xl font-extrabold text-black dark:text-white sm:text-5xl text-center pb-12">
-        <img src={flecha} alt="" className="inline-block w-16 h-12 mr-2"/>Descubre lo que nos hace
+        <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+        alt="flecha" className="inline-block w-16 h-12 mr-2"/>Descubre lo que nos hace
           <span class=" text-primarycolor"> DIFERENTES</span>
         </h2>
         <Swiper
@@ -116,7 +109,7 @@ const SliderComponent = () => {
                 <div className="mx-auto max-w-sm flex flex-col items-center justify-center text-center">
                   <img
                     className="rounded-full w-64"
-                    src={flexibilidad} // Asegúrate de que esta ruta sea correcta
+                    src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/Flexibilidad%20(1).gif" // Asegúrate de que esta ruta sea correcta
                     alt=""
                   />
                   <div className="mb-4 text-gray-700">
@@ -231,7 +224,7 @@ const SliderComponent = () => {
                 <div className="mx-auto max-w-sm flex flex-col items-center justify-center text-center">
                   <img
                     className="rounded-full w-64"
-                    src={aprendizaje} // Asegúrate de que esta ruta sea correcta
+                    src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/Aprendizaje%20Continuo.gif" // Asegúrate de que esta ruta sea correcta
                     alt=""
                   />
                   <div className="mb-4 text-gray-700">
@@ -346,7 +339,7 @@ const SliderComponent = () => {
                 <div className="mx-auto max-w-sm flex flex-col items-center justify-center text-center">
                   <img
                     className="rounded-full w-64"
-                    src={cultura} // Asegúrate de que esta ruta sea correcta
+                    src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/Cultura%20(1).gif" // Asegúrate de que esta ruta sea correcta
                     alt=""
                   />
                   <div className="mb-4 text-gray-700">
@@ -457,7 +450,7 @@ const SliderComponent = () => {
                 <div className="mx-auto max-w-sm flex flex-col items-center justify-center text-center">
                   <img
                     className="rounded-full w-64"
-                    src={desarrollo} // Asegúrate de que esta ruta sea correcta
+                    src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/Inicio%20Diferentes%20(1).gif" // Asegúrate de que esta ruta sea correcta
                     alt=""
                   />
                   <div className="mb-4 text-gray-700">
@@ -570,7 +563,7 @@ const SliderComponent = () => {
                 <div className="mx-auto max-w-sm flex flex-col items-center justify-center text-center">
                   <img  
                     className="rounded-full w-64"
-                    src={beneficios} // Asegúrate de que esta ruta sea correcta
+                    src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/Beneficios.gif" // Asegúrate de que esta ruta sea correcta
                     alt=""
                   />
                   <div className="mb-4 text-gray-700">

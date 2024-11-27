@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import vector from '../../assets/Aprendizaje Continuo.gif';
 
 function Faq() {
   // Estado local para controlar la visibilidad de cada pregunta

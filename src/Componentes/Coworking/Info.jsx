@@ -1,12 +1,6 @@
   import React from 'react'
   import Reserva from '../Reserva/Reserva'
   import { FaWifi } from "react-icons/fa";
-  import Soporte from "../../assets/soporte.png";
-  import Sala from "../../assets/sala.png";
-  import TV from "../../assets/tv.png";
-  import Manager from "../../assets/project.png";
-  import Cafe from "../../assets/cafe.png";
-  import Baño from "../../assets/bano.png";
 
   function Info() {
     return (
@@ -43,32 +37,38 @@
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <img src={Manager} className="w-16 h-16" alt="" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/project.png"
+                  className="w-16 h-16" alt="" />
                   <dt className="text-base leading-7 text-gray-300 mt-2">Office Manager</dt>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                  <img src={Sala} className="w-16 h-16" alt="" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/sala.png" 
+                  className="w-16 h-16" alt="" />
                   <dt className="text-base leading-7 text-gray-300 mt-2">Equipo de Proyección</dt>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <img src={Soporte} className="w-16 h-16" alt="" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/soporte.png"
+                  className="w-16 h-16" alt="" />
                   <dt className="text-base leading-7 text-gray-300 mt-2">Soporte TI</dt>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <img src={TV} className="w-16 h-16" alt="" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/tv.png" 
+                  className="w-16 h-16" alt="" />
                   <dt className="text-base leading-7 text-gray-300 mt-2">Smart TV</dt>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <img src={Baño} className="w-16 h-16" alt="" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/bano.png"
+                  className="w-16 h-16" alt="" />
                   <dt className="text-base leading-7 text-gray-300 mt-2">SS.HH</dt>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <img src={Cafe} className="w-16 h-16" alt="" />
+                  <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/cafe.png"
+                  className="w-16 h-16" alt="" />
                   <dt className="text-base leading-7 text-gray-300 mt-2">Café Ilimitado</dt>
                 </div>
                 

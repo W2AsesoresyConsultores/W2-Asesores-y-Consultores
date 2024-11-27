@@ -1,57 +1,41 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import Alma from '../../assets/Logos Clientes/Alma@2x.png'
-import Altisa from '../../assets/Logos Clientes/Altisa@2x.png'
-import Depsa from '../../assets/Logos Clientes/Depsa@2x.png'
-import Solaris from '../../assets/Logos Clientes/Solaris@2x.png'
-import Econolentes from '../../assets/Logos Clientes/Econolentes@2x.avif'
-import Germsa from '../../assets/Logos Clientes/Germsa@2x.png'
-import Ransa from '../../assets/Logos Clientes/RANSA@2x.png'
-import SLA from '../../assets/Logos Clientes/SLA@2x.png'
-import Friored from '../../assets/Logos Clientes/LOGO FRIORED.jpg'
-import bethel from '../../assets/Logos Clientes/bethel.png'
-import dicar from '../../assets/Logos Clientes/dicar.png'
-import nortex from '../../assets/Logos Clientes/nortex.png'
-import sodimac from '../../assets/Logos Clientes/sodimac.png'
-import topsa from '../../assets/Logos Clientes/topsa.jpg'
-import unacem from '../../assets/Logos Clientes/unacem.jpg'
-import visioncenter from '../../assets/Logos Clientes/visioncenter.jpg'
-import sabores from '../../assets/Logos Clientes/8sabores.png'
-import friendly from '../../assets/Logos Clientes/friendly.png'
 
-// Define the array of slides with numbers
+// Define la URL base de las imágenes en Supabase
+const IMAGE_BASE_URL = 'https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Logos%20Clientes/';
+
+// Define las rutas relativas de las imágenes
 const slides = [
-    Alma,
-    Altisa,
-    Depsa,
-    Econolentes,
-    Germsa,
-    Solaris,
-    Ransa,
-    SLA,
-    Friored,
-    bethel,
-    dicar,
-    nortex,
-    sodimac,
-    topsa,
-    unacem,
-    visioncenter,
-    sabores,
-    friendly
+    'Alma@2x.png',
+    'Altisa@2x.png',
+    'Depsa@2x.png',
+    'Solaris@2x.png',
+    'Econolentes@2x.avif',
+    'Germsa@2x.png',
+    'RANSA@2x.png',
+    'SLA@2x.png',
+    'LOGO%20FRIORED.jpg',
+    'bethel.png',
+    'dicar.png',
+    'nortex.png',
+    'sodimac.png',
+    'topsa.jpg',
+    'unacem.jpg',
+    'visioncenter.jpg',
+    '8sabores.png',
+    'friendly.png'
 ];
 
 const MarcasSlider = () => {
-    // Duplicate the slides array to ensure seamless looping
+    // Duplicar el array de slides para garantizar un bucle sin costuras
     const duplicatedSlides = [...slides, ...slides];
 
     return (
-        <div class="slider">
-            <div class="move bg-white flex items-center justify-center gap-2">
+        <div className="slider">
+            <div className="move bg-white flex items-center justify-center gap-2">
                 {/* Mapear cada elemento del array y renderizar la imagen dentro de un div */}
                 {duplicatedSlides.map((slide, index) => (
-                    <div className="box flex items-center justify-center p-0  rounded-lg" key={index}>
-                        <img className="img-marca hover:scale-125 transition-all duration-400" src={slide} alt={`Marca ${index}`} />
+                    <div className="box flex items-center justify-center p-0 rounded-lg" key={index}>
+                        <img className="img-marca hover:scale-125 transition-all duration-400" src={`${IMAGE_BASE_URL}${slide}`} alt={`Marca ${index}`} />
                     </div>
                 ))}
             </div>

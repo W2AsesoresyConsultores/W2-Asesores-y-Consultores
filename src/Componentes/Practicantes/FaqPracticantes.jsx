@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import flecha from "../../assets/flecha.png";
 
 function FaqPracticantes() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -36,7 +35,8 @@ function FaqPracticantes() {
     <div className="relative w-full font-dmsans bg-white px-6 pt-4 pb-8 mt-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-2xl sm:rounded-lg sm:px-10 mb-10">
       <div className="text-center">
         <h2 className="text-primarytext font-bold text-4xl mt-8 md:mt-8 text-center">
-          <img src={flecha} alt="" className="inline-block w-16 h-12 mr-2" />
+          <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+          alt="" className="inline-block w-16 h-12 mr-2" />
           Preguntas <span className=" text-primarycolor xl:inline"> Frecuentes</span>
         </h2>
 

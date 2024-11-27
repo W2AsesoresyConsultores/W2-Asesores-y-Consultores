@@ -1,7 +1,4 @@
 import React from "react";
-import Wily from "../../assets/Willy.png";
-import Winy from "../../assets/Winy.png";
-import flecha from "../../assets/flecha.png";
 
 function Founders() {
   return (
@@ -9,8 +6,8 @@ function Founders() {
       <div className="container px-6 py-10 flex flex-col items-center">
         <h1 className="text-4xl font-semibold text-center text-gray-800 capitalize lg:text-5xl dark:text-white">
           <img
-            src={flecha}
-            alt=""
+            src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+            alt="Flecha"
             className="inline-block w-16 h-12 mr-2"
           ></img>
           Nuestros <span className="text-primarycolor xl:inline"> Founders</span>
@@ -26,8 +23,8 @@ function Founders() {
           <div className="relative flex flex-col items-center p-8 transition-colors duration-300 transform border border-gray-300 cursor-pointer rounded-xl hover:border-transparent group hover:bg-primarycolor w-full max-w-md mb-16 md:mb-0">
             <img
               className="absolute -top-28 w-28 md:w-32 lg:w-28"
-              src={Winy}
-              alt=""
+              src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/Winy.png"
+              alt="Winy"
             />
 
             <div className="mt-16 text-center">
@@ -69,8 +66,8 @@ function Founders() {
           <div className="relative flex flex-col items-center p-8 transition-colors duration-300 transform border border-gray-300 cursor-pointer rounded-xl hover:border-transparent group hover:bg-primarycolor w-full max-w-md">
             <img
               className="absolute -top-32 w-32 md:w-24 lg:w-32"
-              src={Wily}
-              alt=""
+              src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/Willy.png"
+              alt="Willy"
             />
 
             <div className="mt-16 text-center">

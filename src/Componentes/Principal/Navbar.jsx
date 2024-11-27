@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import logo from "../../assets/Logo horizontal W2 WHITE.png";
 import Contacto from "../Contacto/Contacto";
 import { CgClose } from "react-icons/cg";
 
@@ -32,7 +31,9 @@ function Navbar() {
           {/* Logo o título */}
           <div className="flex-shrink-0">
             <NavLink to="/" className="text-lg font-bold text-white">
-              <img className="w-36" src={logo} alt="" />
+              <img className="w-36" 
+              src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/Logo%20horizontal%20W2%20WHITE.png" 
+              alt="" />
             </NavLink>
           </div>
           {/* Navegación de escritorio */}
@@ -69,14 +70,14 @@ function Navbar() {
             >
               Coworking
             </NavLink>
-            {/* <NavLink
-              to="/Power"
+            { <NavLink
+              to="https://powerw2.com/"
               className={({ isActive }) =>
                 isActive ? activeStyle : classDefault
               }
             >
               Power
-            </NavLink> */}
+            </NavLink> }
           </div>
           <button
             onClick={openModal}

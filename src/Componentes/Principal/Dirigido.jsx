@@ -1,22 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import poder from '../../assets/Power2.jpg'
-import descubrir from '../../assets/descubriendo.jpg'
-import empre from '../../assets/Empresa.jpg'
-import flecha from "../../assets/flecha.png";
-
-
 
 function Dirigido() {
   return (
 <section id='dirigido' class="text-primarytext bg-white body-font font-dmsans pt-8">
   
-  <h2 class="font-dmsans sm:text-4xl text-2xl font-bold title-font text-center text-transparent bg-clip-text bg-gradient-to-r from-primarytext to-black mb-12 mt-6"> <img src ={flecha} alt="" className="inline-block w-16 h-12 mr-2"></img> A quiénes está dirigido <span class="text-primarycolor xl:inline"> nuestro servicio... </span>
+  <h2 class="font-dmsans sm:text-4xl text-2xl font-bold title-font text-center text-transparent bg-clip-text bg-gradient-to-r from-primarytext to-black mb-12 mt-6"> 
+    <img src ="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+    alt="" className="inline-block w-16 h-12 mr-2"></img> A quiénes está dirigido <span class="text-primarycolor xl:inline"> nuestro servicio... </span>
     </h2>
 
   <div class="container px-5 pb-8 mx-auto flex justify-center flex-wrap w-full">
   <div class="mb-8 relative h-96 w-96 mx-auto px-5 py-8 group rounded-3xl bg-gray-200 overflow-hidden shadow-xl">
-    <img src= { empre } alt="" class="absolute w-full h-full inset-0 object-cover"/>
+    <img src= "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/Empresa.jpg"
+    alt="empresa" class="absolute w-full h-full inset-0 object-cover"/>
     <div
         class="absolute inset-0 w-full h-full rounded-3xl bg-black bg-opacity-0 transition duration-500 backdrop-filter group-hover:bg-opacity-40 group-hover:backdrop-blur">
     </div>
@@ -33,7 +30,8 @@ de RR.HH.</p>
           </Link>
 </div>
 <div class="mb-8 relative h-96 w-[350px] md:w-96 mx-auto  px-5 py-8 group rounded-3xl bg-gray-200 overflow-hidden shadow-xl">
-    <img src={ poder } alt="" class="absolute w-full h-full inset-0 object-cover"/>
+    <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/Power2.jpg"
+    alt="poder" class="absolute w-full h-full inset-0 object-cover"/>
     <div
         class="absolute inset-0 w-full h-full rounded-3xl bg-black bg-opacity-0 transition duration-500 backdrop-filter group-hover:bg-opacity-40 group-hover:backdrop-blur">
     </div>
@@ -51,7 +49,8 @@ de atracción incluso si no tienen CV. </p>
           </Link>
 </div>
 <div class="relative h-96 w-96 mx-auto px-5 py-8 group rounded-3xl bg-gray-200 overflow-hidden shadow-xl">
-    <img src= { descubrir } alt="" class="absolute w-full h-full inset-0 object-cover"/>
+    <img src= "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/descubriendo.jpeg"
+    alt="descubrir" class="absolute w-full h-full inset-0 object-cover"/>
     <div
         class="absolute inset-0 w-full h-full rounded-3xl bg-black bg-opacity-0 transition duration-500 backdrop-filter group-hover:bg-opacity-40 group-hover:backdrop-blur">
     </div>

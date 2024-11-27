@@ -2,12 +2,7 @@ import React from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import talent from "../../assets/talent_hub.jpg";
-import creative from "../../assets/Copia de IMG_4036.jpg";
-import tech from "../../assets/tech_lab.jpg";
-import mind from "../../assets/mind_mastery.jpg";
-import money from "../../assets/money_matrix.jpg";
-import flecha from "../../assets/flecha.png";
+
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -75,32 +70,32 @@ function AreasPracticantes() {
         nombreBeneficio: "Talent Hub: El Corazón de la Atracción de Talento",
         descripcionBeneficio: "Dirigido a estudiantes de Psicología Organizacional, Recursos Humanos, Ing. Industrial (enfocada en RR.HH)",
         link: "https://docs.google.com/forms/d/e/1FAIpQLSfKakGbX6w4XxAFw7RqZlDosQ_RrgHm0Y-zRDxQoD8d6iwM0Q/viewform",
-        imagen: talent
+        imagen: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/talent_hub.jpg"
       },
       {
         nombreBeneficio: "Creative Nexus: Conectando Marcas con Audiencias de Impacto ",
         descripcionBeneficio: "Dirigido a estudiantes de las carreras de Comunicaciones, Marketing, Diseño gráfico, Edición de video, Fotografía, y afines.",
         link: "https://docs.google.com/forms/d/e/1FAIpQLSfKakGbX6w4XxAFw7RqZlDosQ_RrgHm0Y-zRDxQoD8d6iwM0Q/viewform",
-        imagen: creative
+        imagen: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/Copia%20de%20IMG_4036.jpg"
       },
       {
         nombreBeneficio: "Tech Lab: Donde la Innovación Define el Futuro",
         descripcionBeneficio: "Dirigido a estudiantes de las carreras de Ingeniería en Sistemas, Ingeniería de Software, Ciencias de la Computación, Ingeniería en Informática, y afines.",
         link: "https://docs.google.com/forms/d/e/1FAIpQLSfKakGbX6w4XxAFw7RqZlDosQ_RrgHm0Y-zRDxQoD8d6iwM0Q/viewform",
-        imagen: tech
+        imagen: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/tech_lab.jpg"
 
       },
       {
         nombreBeneficio: "Mind Mastery: Desarrollando el Potencial a Través del Conocimiento",
         descripcionBeneficio: "Dirigido a estudiantes de las carreras de Educación, Pedagogía, Ciencias de la Educación, Psicopedagogía, y afines.",
         link: "https://docs.google.com/forms/d/e/1FAIpQLSfKakGbX6w4XxAFw7RqZlDosQ_RrgHm0Y-zRDxQoD8d6iwM0Q/viewform",
-        imagen: mind
+        imagen: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/mind_mastery.jpg"
       },
       {
         nombreBeneficio: "MoneyMatrix: Construyendo futuros financieros",
         descripcionBeneficio: "Dirigido a estudiantes de Administración, Contabilidad, Finanzas, Economía y carreras profesionales afines.",
         link: "https://docs.google.com/forms/d/e/1FAIpQLSfKakGbX6w4XxAFw7RqZlDosQ_RrgHm0Y-zRDxQoD8d6iwM0Q/viewform",
-        imagen: money
+        imagen: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/DescubriendoTalentos/money_matrix.jpg"
 
       }
     ];
@@ -110,7 +105,8 @@ function AreasPracticantes() {
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="text-center w-full mx-auto py-2 px-4 sm:px-6 lg:pt-4 lg:px-8">
                     <h2 className="text-3xl font-extrabold text-black dark:text-white sm:text-5xl">
-                        <img src={flecha} alt="" className="inline-block w-16 h-12 mr-2"/>Descubre nuestras áreas,
+                        <img src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+                        alt="flecha" className="inline-block w-16 h-12 mr-2"/>Descubre nuestras áreas,
                         <span className="text-primarycolor"> sé parte de nuestro equipo</span>
                     </h2>
                     <p className="text-xl mt-4  mx-auto text-gray-600">

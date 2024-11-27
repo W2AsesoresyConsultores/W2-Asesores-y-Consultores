@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { supabase } from '../../supabase/supabase.config';
 import Auth from './Auth';

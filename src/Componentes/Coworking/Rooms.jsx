@@ -1,55 +1,47 @@
 import { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import Talleres from '../../assets/coworking/Colegio.jpeg'
-import Freelance from '../../assets/coworking/freelance.jpg'
-import cw2_2 from '../../assets/coworking/Estrategia.jpeg'
-import Charla from '../../assets/coworking/Charla.jpg'
-import Equipo from '../../assets/coworking/equipo.jpg'
-import Eventos from '../../assets/coworking/eventos.jpg'
-import Individual from '../../assets/coworking/individual.jpg'
-import flecha from "../../assets/flecha.png";
 
 const Rooms = () => {
   const rooms = [
     {
       id: 1,
-      imageUrl: Individual, // Reemplaza con tus imágenes
+      imageUrl: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/individual.jpg", // Reemplaza con tus imágenes
       title: 'Espacio Individual',
       seats: 26,
     },
     {
       id: 2,
-      imageUrl: Equipo,
+      imageUrl: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/equipo.jpg",
       title: 'Trabajo en Equipo',
       seats: '2 - 26',
     },
     {
       id: 3,
-      imageUrl: cw2_2,
+      imageUrl: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Estrategia.jpeg",
       title: 'Capacitaciones',
       seats: 26,
     },
     {
       id: 4,
-      imageUrl: Talleres,
+      imageUrl: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Colegio.jpeg",
       title: 'Talleres',
       seats: 26,
     },
     {
       id: 5,
-      imageUrl: Charla,
+      imageUrl: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/Charla.jpg",
       title: 'Charlas',
       seats: 26,
     },
     {
       id: 6,
-      imageUrl: Eventos,
+      imageUrl: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/eventos.jpg",
       title: 'Eventos Corporativos',
       seats: 30,
     },
     {
       id: 7,
-      imageUrl: Freelance,
+      imageUrl: "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Coworking/img_Cow/freelance.jpg",
       title: 'Oficina de Freelance',
       seats: '1 - 26',
     },
@@ -84,8 +76,8 @@ const Rooms = () => {
       
         <h2 className="text-4xl font-bold text-gray-800">
           <img
-            src={flecha}
-            alt=""
+            src="https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Inicio/flecha.png"
+            alt="flecha"
             className="inline-block w-16 h-12 mr-2"
           ></img>Beneficios del <span className='text-primarycolor'>Coworking</span> </h2>
         <p className="text-gray-600 mt-2">

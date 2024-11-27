@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import logoLacruz from '../../assets/STARTUP TALENT.png';
-import modalimg from '../../assets/Pop.gif';
 
 
 function CardTrabajo() {
@@ -21,7 +19,9 @@ function CardTrabajo() {
             {/* Botón de cerrar */}
             <button onClick={handleModalClose} className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-lg font-semibold">X</button>
             {/* Imagen */}
-            <img className='w-full max-h-[80vh]' src= {modalimg} alt="" />
+            <img className='w-full max-h-[80vh]' 
+            src= "https://elcuvegbwtlngranjtym.supabase.co/storage/v1/object/public/AssetsW2/Empresas/Pop.gif"
+            alt="modaling" />
           </div>
         </div>
       )}
