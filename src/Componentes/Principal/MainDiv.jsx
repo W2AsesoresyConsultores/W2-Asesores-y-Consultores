@@ -38,10 +38,10 @@ function MainDiv() {
             <HiArrowRight className='flex items-center justify-center  ml-3'/>
           </Link>
 
-          <Link to="/Power"
+          <a href="https://powerw2.com/"
             className="bg-white border-2 border-primarycolor p-2 text-primarycolor font-semibold rounded-lg w-48 h-14 text-lg flex items-center justify-center hover:text-white hover:border-2 hover:border-primarycolor hover:bg-primarycolor transition-all duration-200" role="button">Soy Talento
             <HiArrowRight className='flex items-center justify-center  ml-3'/>
-          </Link>
+          </a>
 
         </div>
       </div>
